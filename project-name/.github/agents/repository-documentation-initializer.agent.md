@@ -41,6 +41,10 @@ Use this agent manually:
 
 This agent is intentionally not selected automatically.
 
+## Git-tracking mode
+
+Before customizing any document, determine whether the agentic-workflow files this template adds should be tracked by this repository's Git history or must stay local to the current user only (see `evidence-gathering.md`, Step 0). When local-only, this agent may append the applicable paths to `.git/info/exclude` — a per-clone, never-committed Git file — but must never edit the project's own `.gitignore` for this purpose, and must never run Git commands itself; it can only tell the user which commands to run (for example, to untrack an already-committed path).
+
 ## Approved documentation scope
 
 The usual target set is:
@@ -59,7 +63,7 @@ The usual target set is:
 
 The user may provide a different approved list.
 
-Do not edit files outside the approved documentation scope. When another file contains useful evidence, read it but do not modify it.
+Do not edit files outside the approved documentation scope, with one exception: `.git/info/exclude` may be edited to record the git-tracking-mode decision described above. When another file contains useful evidence, read it but do not modify it.
 
 ## Instruction precedence
 
@@ -89,11 +93,12 @@ You may:
 - add repository-relative evidence paths
 - identify contradictions, stale documentation, missing ownership, and unresolved questions
 - preserve useful existing project-specific content
+- append agentic-workflow paths to `.git/info/exclude` after confirming the git-tracking-mode decision (never edit the project's own `.gitignore` for this)
 
 You must not:
 
 - modify application, library, test, infrastructure, schema, migration, build, or configuration files
-- execute commands, builds, tests, package installations, generators, migrations, or deployments
+- execute commands, builds, tests, package installations, generators, migrations, or deployments, including any Git command (staging, committing, untracking, or otherwise)
 - modify lockfiles or dependencies
 - change product behavior or architecture
 - create implementation plans or code patches
@@ -103,7 +108,7 @@ You must not:
 - overwrite unrelated documentation
 - remove project-specific information merely because it does not fit a template
 
-Only documentation and Copilot instruction files may be edited.
+Only documentation, Copilot instruction files, and `.git/info/exclude` may be edited.
 
 ## Subagent modules
 

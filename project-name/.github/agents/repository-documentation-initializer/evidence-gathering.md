@@ -1,6 +1,41 @@
 # Subagent: Evidence Gathering
 
-Use this module first, before any document is customized: determining the approved target set, reading applicable instructions, building the evidence inventory, and detecting template residue in existing files.
+Use this module first, before any document is customized: determining the git-tracking mode for the agentic-workflow files, determining the approved target set, reading applicable instructions, building the evidence inventory, and detecting template residue in existing files.
+
+## Step 0: Determine the git-tracking mode for the agentic-workflow files
+
+Do this before touching any document, and before Step 1.
+
+Check `.git/info/exclude` for entries matching the candidate list below. If matching entries already exist, the decision was already made in a prior run; skip the question and proceed silently under that mode.
+
+Otherwise, ask the user whether the files this template adds (agent profiles, `AGENTS.md`, `demands/`, `plans/`, `feedback/`, `dev-notes/`, and the `docs/` set) should ever be committed to this repository's shared Git history, or must stay local to the current user only and never be shared through Git or any other channel. This matters most when the template is being dropped into an already-existing project rather than used to start a new one.
+
+When the answer is local-only:
+
+- Identify which of the candidate paths were actually introduced by the template on top of the existing project. Do not exclude a path the project already tracked before the template arrived (for example, a pre-existing `AGENTS.md` you are extending); keep that tracked and instead steer any content that must stay private into an excluded path such as `dev-notes/`.
+- Append the applicable paths to `.git/info/exclude` — a per-clone file that Git never commits, tracks, or shares with collaborators — not the project's own `.gitignore`, which is shared and would itself leak the decision. This is a plain local text-file edit, not an application or Git-history change, so it is within this agent's edit scope.
+- Candidate paths:
+  ```
+  .github/agents/
+  .github/copilot-instructions.md
+  AGENTS.md
+  demands/
+  plans/
+  feedback/
+  dev-notes/
+  docs/adr/
+  docs/templates/
+  docs/PROJECT_CONTEXT.md
+  docs/ARCHITECTURE.md
+  docs/DEVELOPMENT.md
+  docs/TESTING.md
+  docs/SECURITY.md
+  docs/DEFINITION_OF_DONE.md
+  ```
+- If any candidate path is already tracked or staged, tell the user to run `git rm -r --cached <path>` themselves before continuing — this agent has no execute tool and must not run Git commands, only edit files.
+- Do not proceed to customize a document whose tracking status is still unresolved; deciding up front is far cheaper than untangling an accidental commit later.
+
+When the answer is shared/tracked (the default for a project freshly created from the template with no prior history), make no `.git/info/exclude` changes and proceed as normal.
 
 ## Evidence model
 

@@ -152,6 +152,72 @@ git remote add origin <repository-url>
 
 Do not push the untouched template as the first project version. Customize and review it first.
 
+### Dropping this template into an already-existing project
+
+When you copy this template's files into a project that already has its own Git history (rather than starting a fresh repository), decide up front whether the agentic-workflow files should ever be committed to that project's shared history, or whether they exist purely for your own local use of Copilot CLI and must never be shared through Git (or any other means) with collaborators.
+
+If they must stay local to you only, do not add them to the project's own `.gitignore` — that file is shared and committed, so editing it would itself leak the decision (and the file list) to every collaborator. Instead, use `.git/info/exclude`, a per-clone ignore file that Git never commits, tracks, or transmits:
+
+```sh
+cat >> .git/info/exclude <<'EOF'
+# Local-only: agentic workflow files (Copilot CLI template), never shared
+.github/agents/
+.github/copilot-instructions.md
+AGENTS.md
+demands/
+plans/
+feedback/
+dev-notes/
+docs/adr/
+docs/templates/
+docs/PROJECT_CONTEXT.md
+docs/ARCHITECTURE.md
+docs/DEVELOPMENT.md
+docs/TESTING.md
+docs/SECURITY.md
+docs/DEFINITION_OF_DONE.md
+EOF
+```
+
+On PowerShell:
+
+```powershell
+Add-Content .git\info\exclude @"
+# Local-only: agentic workflow files (Copilot CLI template), never shared
+.github/agents/
+.github/copilot-instructions.md
+AGENTS.md
+demands/
+plans/
+feedback/
+dev-notes/
+docs/adr/
+docs/templates/
+docs/PROJECT_CONTEXT.md
+docs/ARCHITECTURE.md
+docs/DEVELOPMENT.md
+docs/TESTING.md
+docs/SECURITY.md
+docs/DEFINITION_OF_DONE.md
+"@
+```
+
+Trim the list to only the paths this template actually added on top of the existing project — do not exclude a file the project already tracked before the template was introduced (for example, an existing `AGENTS.md` or `docs/ARCHITECTURE.md` that you extended rather than created). Where the template's file replaced or merged into an existing tracked file, keep it tracked and instead move any content that must stay private into `dev-notes/` or another excluded path.
+
+Confirm the result:
+
+```sh
+git status
+```
+
+None of the excluded paths should appear, even as untracked. If any already got staged or committed before you set this up, remove them from Git's index without deleting the working files:
+
+```sh
+git rm -r --cached <path>
+```
+
+`.git/info/exclude` lives inside the local `.git` directory, so it is never cloned, pushed, or seen by anyone else — each collaborator who wants the same behavior must add their own entries locally. This only controls whether Copilot's own workflow files are tracked; if the underlying project also needs product-code changes ignored, handle that through the project's normal `.gitignore` instead.
+
 ## 2. Create the project README
 
 Replace the generated project’s root `README.md` with a short, project-specific entry point.
