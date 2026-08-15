@@ -33,6 +33,12 @@ Use the `technical-planner` agent rather than writing a plan by hand, so that it
 
 Each plan should reference its source demand under `demands/`. When the plan selects among materially different architectural alternatives, record that decision as an ADR under `docs/adr/` and link it from the plan.
 
+## Feedback loop and parallel tasks
+
+If a plan turns out to be blocked, or depends on a human action, that gets recorded under `feedback/` (see `feedback/README.md`), referencing this plan's slug. Check `feedback/` first before revising a plan.
+
+A plan is sequential by default. It uses explicit `Parallel group` task labels only when parallel execution was specifically requested; `plan-executor` recognizes these labels and treats grouped tasks as safely reorderable relative to each other while still respecting stated dependencies.
+
 ## Index
 
 Add active and completed plans here when useful for navigation.

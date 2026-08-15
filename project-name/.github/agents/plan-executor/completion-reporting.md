@@ -147,6 +147,12 @@ At completion, respond using this structure:
 
 - <deviation, discovered defect, preserved user change, or `None`>
 
+### Feedback and follow-up documents
+
+- Blocker report: `feedback/<slug>-blocker.md` — <one line, or `None created`>
+- Human action request: `feedback/<slug>-human-action.md` — <one line, or `None created`>
+- Stakeholder summary: `<path>` — <audience, or `Not created`>
+
 ### Remaining issues
 
 - <blocker, residual risk, follow-up, or `None`>
@@ -183,3 +189,4 @@ Before completing, verify all of the following:
 - No secrets, debugging artifacts, or accidental files remain.
 - Material deviations were stopped and surfaced rather than implemented silently.
 - The completion report distinguishes complete, partial, blocked, failed, and unverified work.
+- Any genuine blocker or required human action was recorded under `feedback/` rather than silently dropped, and `feedback/` was checked for an existing open report before creating a new one.

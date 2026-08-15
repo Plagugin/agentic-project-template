@@ -23,6 +23,19 @@ Replace every `<...>` placeholder before treating this document as authoritative
 
 Remove references to files that do not exist.
 
+## Quick Definition of Done (small tasks)
+
+For a small, well-understood task (see `AGENTS.md` task classification), use this short list instead of the full checklist below. Escalate to the full checklist when the task turns out to be substantial, ambiguous, or risky.
+
+- [ ] The requested outcome is implemented and matches the request.
+- [ ] Existing working-tree changes were preserved; nothing unrelated was touched.
+- [ ] Relevant tests were added or updated, and the narrowest relevant check was run.
+- [ ] The final diff was reviewed and contains no secrets, debris, or unrelated changes.
+- [ ] Documentation was updated only if behavior, commands, or configuration actually changed.
+- [ ] The result, evidence, and any residual risk were reported truthfully.
+
+Do not use the quick list to avoid scrutiny on a change that is actually substantial, security-sensitive, or data-affecting — use the full checklist for those.
+
 ## Purpose
 
 The Definition of Done ensures that a change is not considered complete merely because code was written.

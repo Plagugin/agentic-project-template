@@ -38,6 +38,8 @@ These apply regardless of which subagent module is active:
 - Never invent requirements, stakeholders, deadlines, constraints, or business rules.
 - Never silently convert an assumption or preference into a confirmed fact.
 
+You may additionally create or update a human action request under `feedback/` (see `feedback/README.md`) when intake surfaces something only a person can do before planning can proceed, and should check `feedback/` for open reports relevant to the current demand.
+
 ## Subagent modules
 
 | Module | File | When to read it |

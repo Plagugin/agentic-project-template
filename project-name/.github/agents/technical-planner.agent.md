@@ -73,6 +73,8 @@ You may:
 - design interfaces, data flows, schemas, migrations, and test strategies at planning level
 - create or update the implementation-plan Markdown document
 - flag demand defects, contradictions, risks, and blockers
+- create or update a blocker report or human action request under `feedback/` when planning is blocked or a person must act
+- group independent tasks into explicit parallel groups, but only when the user asks for a parallelizable breakdown
 - propose follow-up investigations for the executor
 
 You must not:
@@ -87,7 +89,7 @@ You must not:
 - conceal uncertainty behind confident language
 - expand the demand with unrelated improvements or opportunistic refactoring
 
-Only the plan document may be created or edited.
+Only the plan document, and where applicable a `feedback/` report, may be created or edited.
 
 ## Subagent modules
 

@@ -17,24 +17,29 @@ The template includes:
 - a Definition of Done
 - contribution guidance
 - Architecture Decision Record templates
+- a Markdown-based feedback loop for blockers and required human actions
+- a plain-language HTML stakeholder-summary template and a gitignored space for developer-specific summaries
 
 The intended workflow is:
 
 ```text
 Idea or request
     ↓
-Demand Intake Agent
+Demand Intake Agent  <───────────────┐
+    ↓                                │
+Structured demand document           │  feedback/ (blocker or
+    ↓                                │  human-action report)
+Technical Planner Agent  <───────────┤
+    ↓                                │
+Implementation plan                  │
+    ↓                                │
+Plan Executor Agent  ─────────────────┘
     ↓
-Structured demand document
-    ↓
-Technical Planner Agent
-    ↓
-Implementation plan
-    ↓
-Plan Executor Agent
-    ↓
-Implementation, validation, and completion report
+Implementation, validation, completion report,
+and (optionally) a stakeholder-facing HTML summary
 ```
+
+When a demand or plan cannot be completed as written, or a task depends on a person, the responsible agent records that under `feedback/` instead of stalling silently, so the next pass through demand intake or planning can turn it into an updated requirement or decision. See `feedback/README.md` once the template is instantiated.
 
 ## Template structure
 
@@ -60,6 +65,15 @@ project-name/
 │   ├── README.md
 │   └── <demand-slug>-implementation-plan.md
 │
+├── feedback/
+│   ├── README.md
+│   ├── blocker-template.md
+│   ├── human-action-template.md
+│   └── <demand-or-plan-slug>-blocker.md / -human-action.md
+│
+├── dev-notes/
+│   └── README.md   (everything else here is developer-local and gitignored)
+│
 └── docs/
     ├── PROJECT_CONTEXT.md
     ├── ARCHITECTURE.md
@@ -67,6 +81,9 @@ project-name/
     ├── TESTING.md
     ├── SECURE_DEVELOPMENT.md
     ├── DEFINITION_OF_DONE.md
+    ├── templates/
+    │   ├── README.md
+    │   └── stakeholder-summary-template.html
     └── adr/
         ├── README.md
         └── 0000-template.md
@@ -74,6 +91,9 @@ project-name/
 
 - `demands/` holds structured demand documents produced by the `demand-intake` agent.
 - `plans/` holds implementation plans produced by the `technical-planner` agent, one per demand.
+- `feedback/` holds short blocker reports and human-action requests that any agent may raise when a demand or plan cannot proceed as written, or when a person must act. `demand-intake` and `technical-planner` check it before producing new or revised documents, closing the loop even when documents are only ever passed between agents by a human copying files around.
+- `dev-notes/` holds ad hoc, developer-specific summaries on any topic. It is excluded from version control (`.gitignore`) except for its `README.md`.
+- `docs/templates/` holds the reusable stakeholder-summary HTML template the `plan-executor` agent uses to produce a plain-language, non-technical completion summary.
 - `docs/adr/` holds durable architectural decision records, distinct from demands and plans.
 
 A personal Copilot instruction file may also be installed outside the repository:
@@ -724,7 +744,7 @@ Use links and short summaries rather than copying entire sections.
 - [ ] `.github/copilot-instructions.md` contains project-specific guidance.
 - [ ] `/instructions` shows the expected instruction files.
 - [ ] `/agent` shows all four project agents.
-- [ ] The `demands/` and `plans/` directories exist alongside `docs/adr/`.
+- [ ] The `demands/`, `plans/`, and `feedback/` directories exist alongside `docs/adr/`.
 - [ ] The documentation initializer has customized the templates.
 - [ ] Commands and paths were independently reviewed.
 - [ ] Business ownership and stakeholder details were reviewed.

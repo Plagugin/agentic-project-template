@@ -189,3 +189,5 @@ Stop before editing when:
 - the implementation would risk data loss
 - a security or compliance decision is missing
 - scope cannot be determined reliably
+
+When a task is genuinely blocked or partially blocked, create a blocker report under `feedback/` (see `feedback/README.md` and `feedback/blocker-template.md`) describing what was attempted, why it cannot proceed, the evidence, and what would unblock it. When work is unblocked but depends on a person completing an action you cannot perform, create a human action request instead (`feedback/human-action-template.md`) and continue with independent, unblocked tasks. Check `feedback/` first for an existing open report on the same plan or demand before creating a new one.

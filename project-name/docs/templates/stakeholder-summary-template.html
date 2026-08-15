@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title><TICKET-OR-SLUG> — <Short title> — Summary</title>
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --card-bg: #ffffff;
+    --text: #24292f;
+    --muted: #57606a;
+    --accent: #0969da;
+    --green: #1a7f37;
+    --amber: #9a6700;
+    --red: #cf222e;
+    --border: #d0d7de;
+    --code-bg: #f6f8fa;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0 0 60px 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  header {
+    background: linear-gradient(135deg, #0969da 0%, #1a56db 100%);
+    color: #fff;
+    padding: 36px 24px 28px 24px;
+  }
+  header h1 { margin: 0 0 6px 0; font-size: 26px; }
+  header p { margin: 0; opacity: 0.92; font-size: 15px; }
+  .badges { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.35);
+  }
+  .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+  section.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin-top: 22px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  h2 {
+    font-size: 19px;
+    margin-top: 0;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 13px;
+    flex: none;
+  }
+  h3 { font-size: 15.5px; margin: 18px 0 6px 0; color: var(--text); }
+  p { margin: 8px 0; }
+  .muted { color: var(--muted); }
+  ul, ol { padding-left: 22px; }
+  li { margin-bottom: 6px; }
+  code, .code {
+    font-family: ui-monospace, SFMono-Regular, Consolas, "Courier New", monospace;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.92em;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 10px 0 4px 0; font-size: 14px; }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: #f0f3f6; font-weight: 600; }
+  tr:nth-child(even) td { background: #fbfcfd; }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .tag.fixed { background: var(--green); }
+  .tag.new { background: var(--accent); }
+  .tag.test { background: #8250df; }
+  .tag.cleanup { background: #656d76; }
+  .tag.open { background: var(--amber); }
+  .status-box {
+    border-left: 4px solid var(--green);
+    background: #ecfdf3;
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 12px 0;
+  }
+  .status-box.warn { border-left-color: var(--amber); background: #fff8ec; }
+  footer {
+    max-width: 900px;
+    margin: 30px auto 0 auto;
+    padding: 0 24px;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container" style="padding:0;">
+    <h1><TICKET-OR-SLUG> — <Short, plain-language title></h1>
+    <p><One sentence describing what this document summarizes and for whom.></p>
+    <div class="badges">
+      <span class="badge"><N commits/tasks></span>
+      <span class="badge"><overall outcome, e.g. Fixed and verified></span>
+      <span class="badge"><N open follow-ups (see final section)></span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <section class="card">
+    <h2><span class="num">1</span> The problem, in plain terms</h2>
+    <p><Describe the problem or request without jargon, as if to someone outside engineering.></p>
+    <div class="status-box">
+      <strong>Bottom line before this work:</strong> <one or two sentences.>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">2</span> What was done</h2>
+    <p><Plain-language description of the change, grouped into a few coherent points. Avoid code-level detail; explain what it means for the product or the user.></p>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">3</span> Evidence it works</h2>
+    <table>
+      <tr><th>What was checked</th><th>Where</th><th>Result</th></tr>
+      <tr>
+        <td><check></td>
+        <td><environment></td>
+        <td><strong style="color:var(--green);">PASSED</strong></td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">4</span> What's still open</h2>
+    <p><List administrative, follow-up, or decision items — not code defects that were left broken. Be explicit if something is genuinely incomplete or at risk.></p>
+    <ol>
+      <li><strong><item>.</strong> <why it matters and who should decide.></li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">5</span> Impact and next steps for the reader</h2>
+    <p><What this means for the reader's decisions: is anything blocked on them, is there a risk to accept, is there something to schedule or communicate onward.></p>
+  </section>
+
+</div>
+
+<footer>
+  Generated as a plain-language summary of automated engineering work. See the related plan and completion report under <code>plans/</code> and <code>reports/</code> for full technical detail.
+</footer>
+
+</body>
+</html>

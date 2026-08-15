@@ -36,6 +36,10 @@ A demand document is a living requirements record for the duration of the relate
 
 Each demand should be referenced from its implementation plan under `plans/` using the demand's file path. When a decision derived from a demand is architecturally significant, record it as an ADR under `docs/adr/` and link back to the demand.
 
+## Feedback loop
+
+If planning or execution later reveals that this demand cannot be satisfied as written, or depends on a human action, that gets recorded as a report under `feedback/` (see `feedback/README.md`), referencing this demand's slug. When revising a demand, check `feedback/` first for an open report and fold it into the update.
+
 ## Index
 
 Add active and completed demands here when useful for navigation.

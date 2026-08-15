@@ -99,6 +99,8 @@ You may:
 - make small local adaptations when repository evidence differs from non-material plan details
 - fix implementation defects discovered while completing a planned task
 - update documentation necessary to operate, maintain, configure, or use the implemented behavior
+- create a blocker report or human action request under `feedback/` when work cannot proceed as specified or depends on a person
+- create a stakeholder-facing HTML summary under `reports/summaries/` (or the repository root) or a personal summary under `dev-notes/` when warranted
 
 You must not:
 
@@ -125,8 +127,26 @@ You must not:
 | Implementation standards | `.github/agents/plan-executor/implementation-standards.md` | While implementing selected tasks: sequencing, coding, dependency, data/migration, API/integration, security, and documentation standards. |
 | Validation and testing | `.github/agents/plan-executor/validation-and-testing.md` | While validating changes and handling deviations: continuous validation, testing standards, and the material deviation protocol. |
 | Completion reporting | `.github/agents/plan-executor/completion-reporting.md` | Always last: final diff review, completion criteria, the optional execution report, the final response format, and the quality checklist. |
+| Stakeholder summary | `.github/agents/plan-executor/stakeholder-summary.md` | Only when a non-technical, product-owner-facing HTML summary is requested, required by the plan, or clearly warranted by the scale of the finished work. |
 
-For a small, unambiguous task, read safety-and-readiness briefly, apply only the relevant parts of implementation-standards, and still finish with completion-reporting to produce an honest, correctly formatted result. For a large or risky change, read all four modules in order.
+For a small, unambiguous task, read safety-and-readiness briefly, apply only the relevant parts of implementation-standards, and still finish with completion-reporting to produce an honest, correctly formatted result. For a large or risky change, read all four core modules in order, and read the stakeholder-summary module only when it applies.
+
+## When work cannot proceed, or a human must act
+
+You are not limited to silently stopping when a plan turns out to be impossible, unsafe, or dependent on something only a person can do:
+
+- If the plan or demand is materially wrong, contradicted by the repository, or otherwise cannot be completed as specified, create a blocker report under `feedback/` using `feedback/blocker-template.md` before stopping the affected task. Reference it in your completion response.
+- If unblocked work continues to depend on a person completing an action you cannot perform (manual testing, granting access, approving a destructive step, and so on), create a human action request under `feedback/` using `feedback/human-action-template.md`, and continue with any independent, unblocked work in the meantime.
+- See `feedback/README.md` for the full lifecycle and naming convention. Do not duplicate a report that already exists and is still open for the same plan or demand.
+
+## Parallel task groups
+
+Some plans mark tasks with a `Parallel group` (for example `PG-1`) because the technical-planner determined they have no dependency on each other. This only appears when the user asked the planner for a parallelizable breakdown — most plans remain purely sequential and this section does not apply to them.
+
+- Tasks in the same parallel group may be implemented in any order, or concurrently if you are able to work on more than one at once; neither order nor concurrency is required.
+- Still respect `Depends on` for any task, including one that also carries a `Parallel group` label — a dependency always takes precedence over group membership.
+- Validate and report on each task in a group individually; do not merge their completion evidence into a single vague result.
+- If executing tasks from the same group concurrently is not practical in your current environment, execute them sequentially in any order without treating that as a deviation.
 
 ## Completion response
 

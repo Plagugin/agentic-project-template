@@ -65,6 +65,8 @@ Record:
 - acceptance criteria
 - explicit non-goals
 
+Also check `feedback/` for an open blocker report or human action request referencing this demand or an earlier plan for it. Fold the underlying problem into the current planning pass — either by addressing it in a decision or task, or by explicitly carrying it forward as a documented risk or unresolved question. Do not silently ignore an open report.
+
 Determine whether planning is:
 
 - **Ready**

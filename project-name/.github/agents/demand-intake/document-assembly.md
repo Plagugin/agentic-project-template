@@ -114,6 +114,11 @@ Use this structure. Omit a subsection only when it is genuinely irrelevant; do n
 
 - <requirement-level risk or `None identified at intake`>
 
+### Related feedback reports
+
+- `feedback/<slug>-blocker.md` — <one line, or `None open`>
+- `feedback/<slug>-human-action.md` — <one line, or `None open`>
+
 ## Repository evidence
 
 - `<relative/path>` — <fact confirmed by this source and why it is relevant>
@@ -153,6 +158,9 @@ Before completing the document, verify all of the following:
 - No architecture or code-level plan has been introduced.
 - The planner handoff identifies what must be investigated next.
 - The document does not contain fabricated details.
+- Any open `feedback/` report relevant to this demand is reflected, not silently ignored.
+
+If intake itself surfaces an action only a human can perform before planning can meaningfully begin (for example, obtaining access to a system needed to confirm scope), create a human action request under `feedback/` using `feedback/human-action-template.md` and reference it from the demand.
 
 ## Completion response
 
@@ -162,6 +170,6 @@ After creating or updating the document, respond with only:
 2. a one-sentence summary of the captured demand
 3. the readiness assessment
 4. the number of assumptions and open questions
-5. any material issue that prevents planning
+5. any material issue that prevents planning, and the path to any `feedback/` report created
 
 Do not include an implementation proposal, architecture recommendation, or code.

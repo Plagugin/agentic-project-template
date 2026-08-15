@@ -19,17 +19,30 @@ Before starting work:
 
 Useful repository documents may include:
 
-- @.github/copilot-instructions.md
-- @README.md
-- @CONTRIBUTING.md
-- @docs/PROJECT_CONTEXT.md
-- @docs/ARCHITECTURE.md
-- @docs/DEVELOPMENT.md
-- @docs/TESTING.md
-- @docs/SECURITY.md
-- @docs/DEFINITION_OF_DONE.md
+- `.github/copilot-instructions.md`
+- `README.md`
+- `CONTRIBUTING.md`
+- `docs/PROJECT_CONTEXT.md`
+- `docs/ARCHITECTURE.md`
+- `docs/DEVELOPMENT.md`
+- `docs/TESTING.md`
+- `docs/SECURITY.md`
+- `docs/DEFINITION_OF_DONE.md`
 
 Remove references to files that do not exist.
+
+These paths are deliberately plain references, not always-loaded includes. Open a document only when the current task actually needs it (see "Cost-aware document loading" below). Loading every large document for every request is a significant source of unnecessary token cost and is not required by this guide.
+
+## Cost-aware document loading
+
+Token and credit cost scales with how much is read and produced, not just with how the work is judged. Apply these rules across all agents:
+
+- Read a large reference document (project context, architecture, development, testing, security, Definition of Done) only when the current task depends on the information it contains. A one-line documentation fix does not require reading `docs/ARCHITECTURE.md`.
+- Prefer `grep`/targeted search and `view_range` over reading a whole large file when only a section is relevant.
+- For a small, well-understood task, use the "Quick Definition of Done" summary in `docs/DEFINITION_OF_DONE.md` instead of the full checklist.
+- Do not restate large sections of an instruction or template document back into a demand, plan, report, or summary. Reference the source path instead of copying its content.
+- Keep generated Markdown (demands, plans, reports) proportionate to task size: a small task deserves a short document, not full use of every optional section in a template.
+- Do not re-read a document already read earlier in the same session unless it may have changed.
 
 ## Instruction design
 
@@ -105,6 +118,15 @@ Recommended workflow:
 5. Validate and report completion evidence.
 
 Do not force this pipeline on trivial work where the handoff overhead exceeds the risk.
+
+## Feedback loop, human actions, and summaries
+
+The demand → plan → execution pipeline is not strictly one-directional. When reality discovered during planning or execution contradicts the demand or plan, or requires a person to act, close the loop instead of stopping silently or quietly working around it:
+
+- **Blockers.** When a demand or plan cannot be completed as specified, create a blocker report under `feedback/` (`feedback/blocker-template.md`). `demand-intake` and `technical-planner` check `feedback/` for open reports before producing a new or revised document, so the blocker turns into an updated requirement or decision rather than staying stuck. See `feedback/README.md`.
+- **Human actions.** When agents are not blocked on a decision but a person must do something agents cannot (manual testing, granting access, an irreversible or production-affecting step, and so on), any agent may create a human action request under `feedback/` (`feedback/human-action-template.md`) and continue independent work in the meantime.
+- **Stakeholder summaries.** After finishing substantial, approved work, `plan-executor` may produce a plain-language HTML summary aimed at a non-technical product owner or manager, starting from `docs/templates/stakeholder-summary-template.html`. This is an additional deliverable, not a replacement for the technical completion response.
+- **Developer-specific summaries.** Any agent may write an ad hoc Markdown or HTML summary on any topic for the current developer under `dev-notes/`. These files are personal, not part of the tracked project history, and are excluded from version control — see `dev-notes/README.md`.
 
 ## Start-of-task procedure
 
@@ -480,7 +502,7 @@ These instructions apply to `<path>`.
 
 ## Read first
 
-- @<relative documentation path>
+- `<relative documentation path>` (read on demand, not an always-loaded include)
 
 ## Boundaries
 

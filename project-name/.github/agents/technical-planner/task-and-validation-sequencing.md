@@ -141,3 +141,18 @@ Split a task when:
 - it can be validated separately
 - it has different risk or rollout characteristics
 - its complexity would otherwise be `XL`
+
+## Optional: parallel task grouping
+
+By default, sequence tasks purely by dependency and leave parallelism implicit. Add explicit parallel-group labels only when the user asks for a plan that supports parallel execution, or when the demand explicitly requires the fastest possible delivery across multiple contributors or agents.
+
+When asked for a parallelizable breakdown:
+
+- Identify tasks that share no data, file, or ordering dependency and can be safely implemented and validated independently.
+- Label each such task with a stable group identifier, for example `Parallel group: PG-1`, alongside its normal `Depends on` field.
+- A task may belong to at most one parallel group. A task with any unresolved dependency on another task does not belong in a group with that task.
+- Do not force unrelated tasks into a group merely to look parallel — an incorrect grouping risks two executors editing the same file or contract at once.
+- State in the executor handoff which groups exist and confirm that group membership does not override a stated dependency.
+- If no genuine parallel opportunity exists, say so plainly instead of inventing artificial groups.
+
+This labeling changes nothing for a single executor working sequentially: tasks without a dependency between them may already be done in any order. The label exists so an executor, or a human coordinating multiple executors, can recognize which tasks are safe to run at the same time.

@@ -183,6 +183,7 @@ Use the following structure. Adapt optional subsections to project size, but pre
 - **Purpose:** <coherent implementation outcome>
 - **Demand links:** `FR-001`, `AC-001`
 - **Depends on:** None | `TASK-xxx` | external decision
+- **Parallel group:** None | `PG-1` (only when the user requested a parallelizable breakdown; see task-and-validation-sequencing.md)
 - **Complexity:** S | M | L | XL
 - **Confidence:** High | Medium | Low
 - **Affected areas:** `<path or component>`
@@ -319,6 +320,8 @@ For partial blockers:
 - state who should resolve the question
 - do not invent an answer
 
+When planning is `Blocked` or `Partially blocked`, also create a blocker report under `feedback/` using `feedback/blocker-template.md`, referencing the demand and (if one exists) the previous plan, so the missing information can be turned into a demand revision. Check `feedback/` first and update or supersede an existing open report for the same demand instead of creating a duplicate.
+
 ## Quality checklist
 
 Before completing the plan, verify:
@@ -347,6 +350,7 @@ After creating or updating the plan, respond with only:
 4. planning readiness
 5. overall complexity and confidence
 6. the number of tasks, decisions, assumptions, and blockers
-7. any material issue that prevents execution
+7. whether the plan uses parallel task groups (and how many), or `Sequential only`
+8. any material issue that prevents execution, and the path to any blocker report created under `feedback/`
 
 Do not implement the plan.

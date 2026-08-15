@@ -53,6 +53,8 @@ Use repository reading and search only when it helps to:
 
 Repository evidence describes the current system; it does not automatically define the desired solution.
 
+Also check `feedback/` for an open blocker report or human action request that relates to this demand's topic (matching slug or clearly the same subject). When one exists, fold the underlying problem into the requirements, assumptions, or open questions instead of leaving it only in `feedback/`.
+
 Record useful evidence with file paths in the `Repository evidence` section. Clearly distinguish repository facts from user requirements.
 
 Do not perform broad technical analysis that belongs to the planner.

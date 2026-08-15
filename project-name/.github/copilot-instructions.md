@@ -282,7 +282,7 @@ A change is complete only when:
 - the final diff contains no known unrelated or accidental changes
 - validation results, deviations, assumptions, and unresolved risks are reported truthfully
 
-See @../docs/DEFINITION_OF_DONE.md for the detailed project checklist.
+See `docs/DEFINITION_OF_DONE.md` for the detailed project checklist. Read the full document only for substantial work; for a small, well-understood task, the "Quick Definition of Done" summary at the top of that file is normally sufficient.
 
 ## Completion response
 
