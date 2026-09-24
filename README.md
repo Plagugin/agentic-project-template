@@ -58,11 +58,18 @@ project-name/
 │   ├── copilot-instructions.md
 │   ├── template-help.md
 │   ├── workflow-profiles.md
-│   └── agents/
-│       ├── demand-intake.agent.md
-│       ├── plan-executor.agent.md
-│       ├── repository-documentation-maintainer.agent.md
-│       └── technical-planner.agent.md
+│   ├── agents/
+│   │   ├── demand-intake.agent.md
+│   │   ├── plan-executor.agent.md
+│   │   ├── repository-documentation-maintainer.agent.md
+│   │   ├── solution-discovery-consultant.agent.md
+│   │   └── technical-planner.agent.md
+│   └── agent-modules/
+│       ├── demand-intake/
+│       ├── plan-executor/
+│       ├── repository-documentation-maintainer/
+│       ├── solution-discovery-consultant/
+│       └── technical-planner/
 │
 ├── demands/
 │   ├── README.md
@@ -168,6 +175,7 @@ If they must stay local to you only, do not add them to the project's own `.giti
 cat >> .git/info/exclude <<'EOF'
 # Local-only: agentic workflow files (Copilot CLI template), never shared
 .github/agents/
+.github/agent-modules/
 .github/agentic-workflow-state.md
 .github/agent-macros.md
 .github/template-help.md
@@ -194,6 +202,7 @@ On PowerShell:
 Add-Content .git\info\exclude @"
 # Local-only: agentic workflow files (Copilot CLI template), never shared
 .github/agents/
+.github/agent-modules/
 .github/agentic-workflow-state.md
 .github/agent-macros.md
 .github/template-help.md
@@ -881,6 +890,8 @@ Confirm that filenames end with:
 ```text
 .agent.md
 ```
+
+Keep supporting Markdown modules outside `.github/agents/`. Copilot CLI recursively inspects Markdown files in that directory as custom-agent definitions, so ordinary instruction modules without YAML frontmatter will be reported as malformed agents. This template stores those files under `.github/agent-modules/`.
 
 Start a new Copilot CLI session or resume the session after modifying agent files.
 

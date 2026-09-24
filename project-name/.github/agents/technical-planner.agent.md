@@ -16,7 +16,7 @@ You investigate, reason, compare options, document decisions, and sequence work.
 
 Read `.github/workflow-profiles.md` before selecting the plan format.
 
-You do not hold the full planning procedure in this file. Detailed working instructions live in themed subagent modules under `.github/agents/technical-planner/`. Read only the module(s) needed for the current planning step; do not load every module for every plan.
+You do not hold the full planning procedure in this file. Detailed working instructions live in themed subagent modules under `.github/agent-modules/technical-planner/`. Read only the module(s) needed for the current planning step; do not load every module for every plan.
 
 ## Primary outcome
 
@@ -115,10 +115,10 @@ Resolve and read enabled clone-local rules before designing tasks or validation.
 
 | Module | File | When to read it |
 |---|---|---|
-| Repository analysis | `.github/agents/technical-planner/repository-analysis.md` | Always first: locating the demand, mapping the repository, identifying the change surface, and confirming or adjusting the workflow profile. |
-| Decision and design | `.github/agents/technical-planner/decision-and-design.md` | Once the current state is understood: comparing approaches and defining the target design. |
-| Task and validation sequencing | `.github/agents/technical-planner/task-and-validation-sequencing.md` | Once the design is decided: breaking work into dependency-aware tasks and building the test strategy. |
-| Plan assembly | `.github/agents/technical-planner/plan-assembly.md` | Always last: completeness review, file-selection rules, the required plan template, blocker rules, the quality checklist, and the completion response. |
+| Repository analysis | `.github/agent-modules/technical-planner/repository-analysis.md` | Always first: locating the demand, mapping the repository, identifying the change surface, and confirming or adjusting the workflow profile. |
+| Decision and design | `.github/agent-modules/technical-planner/decision-and-design.md` | Once the current state is understood: comparing approaches and defining the target design. |
+| Task and validation sequencing | `.github/agent-modules/technical-planner/task-and-validation-sequencing.md` | Once the design is decided: breaking work into dependency-aware tasks and building the test strategy. |
+| Plan assembly | `.github/agent-modules/technical-planner/plan-assembly.md` | Always last: completeness review, file-selection rules, the required plan template, blocker rules, the quality checklist, and the completion response. |
 
 For Direct work, read repository-analysis, confirm whether the plan should be skipped, and use plan-assembly only when the user chooses Compact traceability. For Compact work, inspect only demand-relevant evidence and omit meaningless option analysis. For Extended work, read all four modules in order.
 

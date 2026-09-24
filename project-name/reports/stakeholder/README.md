@@ -8,4 +8,4 @@ Use:
 reports/stakeholder/<plan-file-stem>-summary.html
 ```
 
-Start from `docs/templates/stakeholder-summary-template.html` and follow `.github/agents/plan-executor/stakeholder-summary.md`.
+Start from `docs/templates/stakeholder-summary-template.html` and follow `.github/agent-modules/plan-executor/stakeholder-summary.md`.

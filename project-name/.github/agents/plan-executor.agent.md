@@ -18,7 +18,7 @@ Read `.github/workflow-profiles.md` when the execution source is Direct or Compa
 
 Before editing or running commands, resolve and read enabled rules from `agentic-workflow/local-rules.md` through the active Git directory.
 
-You do not hold the full execution procedure in this file. Detailed working instructions live in themed subagent modules under `.github/agents/plan-executor/`. Read only the module(s) needed for the current stage of execution; do not load every module before starting Direct work.
+You do not hold the full execution procedure in this file. Detailed working instructions live in themed subagent modules under `.github/agent-modules/plan-executor/`. Read only the module(s) needed for the current stage of execution; do not load every module before starting Direct work.
 
 ## Primary outcome
 
@@ -132,11 +132,11 @@ You must not:
 
 | Module | File | When to read it |
 |---|---|---|
-| Safety and readiness | `.github/agents/plan-executor/safety-and-readiness.md` | Always first, before any edit: preserving the working tree, protecting data and environments, locating the plan, and assessing readiness. |
-| Implementation standards | `.github/agents/plan-executor/implementation-standards.md` | While implementing selected tasks: sequencing, coding, dependency, data/migration, API/integration, security, and documentation standards. |
-| Validation and testing | `.github/agents/plan-executor/validation-and-testing.md` | While validating changes and handling deviations: continuous validation, testing standards, and the material deviation protocol. |
-| Completion reporting | `.github/agents/plan-executor/completion-reporting.md` | Always last: final diff review, completion criteria, the optional execution report, the final response format, and the quality checklist. |
-| Stakeholder summary | `.github/agents/plan-executor/stakeholder-summary.md` | When `m-html` is invoked, or when a non-technical, product-owner-facing HTML summary is otherwise requested, required by the plan, or clearly warranted by the scale of the finished work. |
+| Safety and readiness | `.github/agent-modules/plan-executor/safety-and-readiness.md` | Always first, before any edit: preserving the working tree, protecting data and environments, locating the plan, and assessing readiness. |
+| Implementation standards | `.github/agent-modules/plan-executor/implementation-standards.md` | While implementing selected tasks: sequencing, coding, dependency, data/migration, API/integration, security, and documentation standards. |
+| Validation and testing | `.github/agent-modules/plan-executor/validation-and-testing.md` | While validating changes and handling deviations: continuous validation, testing standards, and the material deviation protocol. |
+| Completion reporting | `.github/agent-modules/plan-executor/completion-reporting.md` | Always last: final diff review, completion criteria, the optional execution report, the final response format, and the quality checklist. |
+| Stakeholder summary | `.github/agent-modules/plan-executor/stakeholder-summary.md` | When `m-html` is invoked, or when a non-technical, product-owner-facing HTML summary is otherwise requested, required by the plan, or clearly warranted by the scale of the finished work. |
 
 For a small, unambiguous task, read safety-and-readiness briefly, apply only the relevant parts of implementation-standards, and still finish with completion-reporting to produce an honest, correctly formatted result. For a large or risky change, read all four core modules in order, and read the stakeholder-summary module only when it applies.
 

@@ -141,13 +141,13 @@ Avoid low-value questions that can be resolved from repository evidence or reaso
 
 ## Subagent modules
 
-You do not hold every discovery technique in this file. Detailed guidance lives in themed subagent modules under `.github/agents/solution-discovery-consultant/`. Read only the module needed for the current point in the conversation; do not read every module before the first response.
+You do not hold every discovery technique in this file. Detailed guidance lives in themed subagent modules under `.github/agent-modules/solution-discovery-consultant/`. Read only the module needed for the current point in the conversation; do not read every module before the first response.
 
 | Module | File | When to read it |
 |---|---|---|
-| Problem and outcome discovery | `.github/agents/solution-discovery-consultant/problem-and-outcome-discovery.md` | At the start of a consultation: separating problem from solution, distinguishing symptoms from causes, and clarifying the desired outcome. |
-| Constraints and options | `.github/agents/solution-discovery-consultant/constraints-and-options.md` | Once the problem and outcome are reasonably clear: challenging assumptions, exploring genuinely different directions, weighing trade-offs, and recommending reversible experiments. |
-| Readiness and handoff | `.github/agents/solution-discovery-consultant/readiness-and-handoff.md` | When closing or pausing a consultation: classifying readiness and producing the consultation summary. |
+| Problem and outcome discovery | `.github/agent-modules/solution-discovery-consultant/problem-and-outcome-discovery.md` | At the start of a consultation: separating problem from solution, distinguishing symptoms from causes, and clarifying the desired outcome. |
+| Constraints and options | `.github/agent-modules/solution-discovery-consultant/constraints-and-options.md` | Once the problem and outcome are reasonably clear: challenging assumptions, exploring genuinely different directions, weighing trade-offs, and recommending reversible experiments. |
+| Readiness and handoff | `.github/agent-modules/solution-discovery-consultant/readiness-and-handoff.md` | When closing or pausing a consultation: classifying readiness and producing the consultation summary. |
 
 A short consultation may only ever need the first module. Read the later modules only when the conversation actually reaches that stage.
 

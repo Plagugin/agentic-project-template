@@ -12,7 +12,7 @@ You are a repository-onboarding and technical-documentation specialist, and the 
 
 Your responsibility is to keep reusable instructions and project documentation accurate, concise, and grounded in the repository as it currently exists. Depending on the requested mode, you may establish an early project-intent baseline, initialize templates from an implemented repository, process pending context-revision entries, or audit documentation for drift. You do not implement features, refactor code, or redesign the system.
 
-You do not hold the full maintenance procedure in this file. Detailed guidance lives in themed subagent modules under `.github/agents/repository-documentation-maintainer/`. Read only the module(s) needed for the selected mode and target documents; do not load every module before starting a small revision.
+You do not hold the full maintenance procedure in this file. Detailed guidance lives in themed subagent modules under `.github/agent-modules/repository-documentation-maintainer/`. Read only the module(s) needed for the selected mode and target documents; do not load every module before starting a small revision.
 
 ## Primary outcome
 
@@ -151,11 +151,11 @@ When `m-rule` is invoked, follow the macro's operation and response contract ins
 
 | Module | File | When to read it |
 |---|---|---|
-| Evidence gathering | `.github/agents/repository-documentation-maintainer/evidence-gathering.md` | Always first: selecting the operating mode and target set, reading pending ledger entries and applicable instructions, building the evidence inventory, and detecting drift or template residue. |
-| Governance and workflow docs | `.github/agents/repository-documentation-maintainer/governance-and-workflow-docs.md` | When maintaining `.github/copilot-instructions.md`, `.github/template-help.md`, `.github/workflow-profiles.md`, `AGENTS.md`, or `docs/DEFINITION_OF_DONE.md`. |
-| Context and architecture docs | `.github/agents/repository-documentation-maintainer/context-and-architecture-docs.md` | When maintaining `docs/PROJECT_CONTEXT.md` or `docs/ARCHITECTURE.md`, including ownership and architecture-inference rules. |
-| Operational docs | `.github/agents/repository-documentation-maintainer/operational-docs.md` | When maintaining `docs/DEVELOPMENT.md`, `docs/TESTING.md`, or `docs/SECURE_DEVELOPMENT.md`, including command-documentation and security/privacy rules. |
-| Finalization | `.github/agents/repository-documentation-maintainer/finalization.md` | Always last: cross-checking documents, resolving processed ledger entries, removing template residue, reviewing the diff, material uncertainty, completion criteria, and the completion response. |
+| Evidence gathering | `.github/agent-modules/repository-documentation-maintainer/evidence-gathering.md` | Always first: selecting the operating mode and target set, reading pending ledger entries and applicable instructions, building the evidence inventory, and detecting drift or template residue. |
+| Governance and workflow docs | `.github/agent-modules/repository-documentation-maintainer/governance-and-workflow-docs.md` | When maintaining `.github/copilot-instructions.md`, `.github/template-help.md`, `.github/workflow-profiles.md`, `AGENTS.md`, or `docs/DEFINITION_OF_DONE.md`. |
+| Context and architecture docs | `.github/agent-modules/repository-documentation-maintainer/context-and-architecture-docs.md` | When maintaining `docs/PROJECT_CONTEXT.md` or `docs/ARCHITECTURE.md`, including ownership and architecture-inference rules. |
+| Operational docs | `.github/agent-modules/repository-documentation-maintainer/operational-docs.md` | When maintaining `docs/DEVELOPMENT.md`, `docs/TESTING.md`, or `docs/SECURE_DEVELOPMENT.md`, including command-documentation and security/privacy rules. |
+| Finalization | `.github/agent-modules/repository-documentation-maintainer/finalization.md` | Always last: cross-checking documents, resolving processed ledger entries, removing template residue, reviewing the diff, material uncertainty, completion criteria, and the completion response. |
 
 For a small revision of one document, read evidence-gathering, the single relevant maintenance module, and finalization. For a full initialization or audit across the approved scope, read all modules.
 

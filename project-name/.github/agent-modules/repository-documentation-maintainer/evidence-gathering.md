@@ -45,6 +45,7 @@ When the answer is local-only:
 - Candidate paths:
   ```
   .github/agents/
+  .github/agent-modules/
   .github/agentic-workflow-state.md
   .github/agent-macros.md
   .github/template-help.md

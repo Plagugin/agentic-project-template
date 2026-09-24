@@ -56,7 +56,7 @@ m-help all
 
 Behavior:
 
-1. Follow `.github/agents/plan-executor/stakeholder-summary.md`.
+1. Follow `.github/agent-modules/plan-executor/stakeholder-summary.md`.
 2. Explain the problem, delivered outcome, stakeholder impact, verification, remaining risk, and next steps in plain language.
 3. Avoid implementation-heavy prose, raw command output, and unsupported claims.
 4. Do not replace or omit the normal technical completion response.

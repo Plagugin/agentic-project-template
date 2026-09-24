@@ -8,7 +8,7 @@ A self-contained, single-file HTML template for summarizing completed work for a
 
 Used by:
 
-- `plan-executor`, after completing an approved plan, when a stakeholder-facing summary is useful (see `.github/agents/plan-executor/stakeholder-summary.md`).
+- `plan-executor`, after completing an approved plan, when a stakeholder-facing summary is useful (see `.github/agent-modules/plan-executor/stakeholder-summary.md`).
 - Any other agent producing a similar plain-language summary of finished work.
 
 Conventions:
