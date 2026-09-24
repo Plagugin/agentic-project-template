@@ -22,6 +22,8 @@ Each task must state:
 
 Use stable identifiers such as `TASK-001`.
 
+For a Compact plan, express these fields as concise task-table columns or short task blocks. Do not remove tasks, dependencies, validation, or stop conditions merely to satisfy the document density target.
+
 ## Planning principle: Preserve traceability
 
 Every confirmed demand requirement must map to one or more:
@@ -97,6 +99,15 @@ Adapt the phases to the actual project. Do not force irrelevant phases.
 Each task should be executable in one coherent agent session where feasible. Split `XL` tasks.
 
 ## Step 8: Build the test and validation strategy
+
+Apply enabled clone-local rules when assigning validation:
+
+- do not prescribe a prohibited command as locally executable
+- preserve required checks as remote or human validation when a rule supplies that alternative
+- state what evidence the executor or user must provide
+- do not weaken acceptance criteria merely because this machine cannot run a check
+- when the plan is local-only, the applicable `LOCAL-RULE-NNN` may be referenced
+- when the plan is tracked/shared, do not copy the local rule or ID into it; retain the canonical validation and let the executor apply the clone-local registry
 
 Map acceptance criteria and requirements to concrete validation activities.
 

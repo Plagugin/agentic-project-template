@@ -2,7 +2,7 @@
 
 This document describes the current architecture of the project.
 
-It is intended for developers, architects, reviewers, operators, and coding agents. Keep it evidence-based and aligned with the repository as it exists today. Future proposals belong in implementation plans or architecture decision records, not in this document unless they have been approved and implemented.
+It is intended for developers, architects, reviewers, operators, and coding agents. Keep it evidence-based and aligned with the repository as it exists today. Future proposals belong in demands and implementation plans, not in this document unless they have been approved and implemented.
 
 Replace every `<...>` placeholder before treating this document as authoritative. Remove sections that do not apply.
 
@@ -14,7 +14,6 @@ Replace every `<...>` placeholder before treating this document as authoritative
 - **Last reviewed:** <YYYY-MM-DD>
 - **Repository basis:** <branch, release, tag, or commit>
 - **Related context:** `docs/PROJECT_CONTEXT.md`
-- **Architecture decisions:** `docs/adr/`
 
 ## Purpose
 
@@ -69,8 +68,7 @@ This document does not cover:
 | Project purpose and boundaries | `docs/PROJECT_CONTEXT.md` |
 | Development workflow | `docs/DEVELOPMENT.md` |
 | Testing strategy | `docs/TESTING.md` |
-| Security guidance | `docs/SECURITY.md` |
-| Architecture decisions | `docs/adr/` |
+| Security guidance | `docs/SECURE_DEVELOPMENT.md` |
 | Operations or runbooks | `<path>` |
 
 Remove entries that do not exist.
@@ -866,19 +864,15 @@ For each extension point, document:
 
 Do not describe accidental implementation details as supported extension points.
 
-## Architectural decisions
+## Implemented architectural decisions
 
-Material decisions are recorded under `docs/adr/`.
+Keep material architectural decisions in this section when they are necessary to understand why the current system has its present shape. Describe implemented reality, not proposals that are still under consideration.
 
-### Current decisions
+| Decision | Rationale and constraints | Consequences and trade-offs | Status | Evidence |
+|---|---|---|---|---|
+| <decision> | <why this approach was selected and which constraints shaped it> | <important benefits, costs, limitations, and follow-on effects> | Current / Transitional / Deprecated | `<path>` |
 
-| ADR | Decision | Status | Affected areas |
-|---|---|---|---|
-| `docs/adr/<file>.md` | <decision> | Accepted | <areas> |
-
-### Decision triggers
-
-Create or update an ADR when changing:
+Add or update an entry when changing:
 
 - major component boundaries
 - dependency direction
@@ -891,6 +885,14 @@ Create or update an ADR when changing:
 - deployment model
 - migration strategy
 - availability or consistency model
+
+For each entry:
+
+- summarize meaningful alternatives when they help explain the current choice
+- identify affected components, contracts, data, security boundaries, or operations
+- link to the implementing demand or plan when that history is useful
+- include repository evidence for the implemented state
+- update or replace stale entries when the architecture changes
 
 ## Known limitations and technical debt
 
@@ -916,7 +918,7 @@ Do not turn this section into a general backlog.
   - **Decision deadline or trigger:** <date or trigger>
   - **Affected components:** <components>
 
-Remove resolved questions and record material decisions in an ADR.
+Remove resolved questions and record the implemented result in the architectural decisions section above.
 
 ## Architecture verification
 
@@ -952,7 +954,7 @@ Before approving an architectural change, verify:
 - operational impact is addressed
 - migration and rollback are feasible
 - testing covers the changed boundary
-- documentation and ADRs are updated
+- architecture and related documentation are updated
 
 ## Evidence map
 
@@ -977,7 +979,7 @@ Review this document when:
 - authentication or authorization changes
 - a new trust boundary appears
 - a major dependency is introduced
-- an ADR is accepted
+- a material architectural decision is implemented
 - operational behavior changes
 - repeated planning mistakes reveal missing architectural context
 
@@ -991,7 +993,7 @@ During review:
 - verify deployment and operational assumptions
 - remove obsolete sections
 - update the last-reviewed date
-- add links to relevant ADRs
+- update the implemented architectural decisions and their evidence
 
 ## Architecture summary for agents
 
@@ -1008,6 +1010,6 @@ Before planning or implementation, an agent should be able to answer:
 - Where are the trust boundaries?
 - How is the system deployed and operated?
 - Which quality attributes and constraints shape design decisions?
-- Which changes require an ADR or explicit architectural approval?
+- Which changes require explicit architectural approval?
 
 If this document does not provide reliable answers, inspect repository evidence and surface the gap rather than guessing.

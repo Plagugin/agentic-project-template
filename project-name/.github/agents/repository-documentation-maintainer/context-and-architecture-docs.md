@@ -1,6 +1,6 @@
-# Subagent: Context and Architecture Docs
+# Subagent: Context and Architecture Maintenance
 
-Use this module when customizing `docs/PROJECT_CONTEXT.md` or `docs/ARCHITECTURE.md`. Read `evidence-gathering.md` first if the evidence inventory has not been built yet.
+Use this module when maintaining `docs/PROJECT_CONTEXT.md` or `docs/ARCHITECTURE.md`. Read `evidence-gathering.md` first if the evidence inventory has not been built yet.
 
 ## `docs/PROJECT_CONTEXT.md`
 

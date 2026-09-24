@@ -249,7 +249,7 @@ These rules must remain true across implementation changes.
 
 - <availability, audit, recoverability, or support rule>
 
-Any change that would violate or redefine an invariant requires explicit review and an updated decision record.
+Any change that would violate or redefine an invariant requires explicit review and an update to the relevant project context or architecture documentation.
 
 ## Constraints
 
@@ -435,7 +435,7 @@ Non-goals help prevent accidental scope expansion. Review them when the product 
 
 ### Architecture decisions
 
-Material decisions should be recorded under `docs/adr/` when they affect:
+Material implemented decisions should be summarized in `docs/ARCHITECTURE.md` when they affect:
 
 - architectural boundaries
 - public contracts
@@ -444,6 +444,8 @@ Material decisions should be recorded under `docs/adr/` when they affect:
 - significant dependencies
 - deployment or operational model
 - long-term compatibility
+
+Include the decision, rationale, important alternatives or constraints, consequences, affected areas, and supporting repository evidence.
 
 ### Change review triggers
 
@@ -476,9 +478,8 @@ Require explicit review when a change:
 | Current architecture | `docs/ARCHITECTURE.md` |
 | Development workflow | `docs/DEVELOPMENT.md` |
 | Testing strategy and commands | `docs/TESTING.md` |
-| Security guidance | `docs/SECURITY.md` |
+| Security guidance | `docs/SECURE_DEVELOPMENT.md` |
 | Completion checklist | `docs/DEFINITION_OF_DONE.md` |
-| Architecture decisions | `docs/adr/` |
 | Contribution process | `CONTRIBUTING.md` |
 | Agent workflow | `AGENTS.md` |
 | Copilot project instructions | `.github/copilot-instructions.md` |

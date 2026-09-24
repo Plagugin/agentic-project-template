@@ -1,0 +1,22 @@
+# One repository-relative path per line.
+# Entries may identify a file or directory.
+# Use forward slashes and literal paths; do not use glob patterns.
+# Remove examples that do not apply.
+AGENTS.md
+.github/agentic-workflow-state.md
+.github/agent-macros.md
+.github/template-help.md
+.github/workflow-profiles.md
+.github/agents/
+.github/copilot-instructions.md
+demands/
+plans/
+feedback/
+reports/
+docs/templates/
+docs/PROJECT_CONTEXT.md
+docs/ARCHITECTURE.md
+docs/DEVELOPMENT.md
+docs/TESTING.md
+docs/SECURE_DEVELOPMENT.md
+docs/DEFINITION_OF_DONE.md

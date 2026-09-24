@@ -24,7 +24,7 @@ Separate required work from optional improvement opportunities.
 
 ## Planning principle: Make decisions explicit
 
-Use a decision record whenever the plan selects among meaningful alternatives.
+Use a structured plan decision whenever the plan selects among meaningful alternatives.
 
 Each decision must include:
 

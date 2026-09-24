@@ -206,3 +206,5 @@ Update documentation when implementation changes:
 Keep documentation factual and synchronized with the implemented behavior.
 
 Do not document planned behavior that was not implemented.
+
+Do not use `feedback/context-revisions.md` to defer a documentation edit that is necessary for the implemented behavior to be used, configured, tested, migrated, operated, or understood safely. The context-revision ledger is for broader reconciliation of project context, architecture, ownership, repository maps, cross-document consistency, and accumulated structural changes.

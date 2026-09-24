@@ -17,24 +17,26 @@ Replace every `<...>` placeholder before treating this document as authoritative
   - `docs/ARCHITECTURE.md`
   - `docs/DEVELOPMENT.md`
   - `docs/TESTING.md`
-  - `docs/SECURITY.md`
+  - `docs/SECURE_DEVELOPMENT.md`
   - `CONTRIBUTING.md`
   - `AGENTS.md`
+  - `.github/workflow-profiles.md`
 
 Remove references to files that do not exist.
 
-## Quick Definition of Done (small tasks)
+## Quick Definition of Done (Direct work)
 
-For a small, well-understood task (see `AGENTS.md` task classification), use this short list instead of the full checklist below. Escalate to the full checklist when the task turns out to be substantial, ambiguous, or risky.
+For work classified as Direct under `.github/workflow-profiles.md`, use this short list instead of the full checklist below. Escalate to Compact or Extended workflow when a Direct condition fails or an Extended trigger appears.
 
 - [ ] The requested outcome is implemented and matches the request.
 - [ ] Existing working-tree changes were preserved; nothing unrelated was touched.
 - [ ] Relevant tests were added or updated, and the narrowest relevant check was run.
 - [ ] The final diff was reviewed and contains no secrets, debris, or unrelated changes.
 - [ ] Documentation was updated only if behavior, commands, or configuration actually changed.
+- [ ] Documentation impact was assessed and any qualifying context revision was recorded.
 - [ ] The result, evidence, and any residual risk were reported truthfully.
 
-Do not use the quick list to avoid scrutiny on a change that is actually substantial, security-sensitive, or data-affecting — use the full checklist for those.
+Do not use the quick list to avoid scrutiny on work that requires Compact or Extended treatment.
 
 ## Purpose
 
@@ -406,7 +408,9 @@ Update the authoritative documents affected by the change.
 - [ ] Repository-relative links are valid.
 - [ ] Documentation contains no secrets or sensitive production data.
 - [ ] Documentation describes implemented behavior only.
-- [ ] Architecture decisions are recorded when required.
+- [ ] Material architectural decisions are reflected in `docs/ARCHITECTURE.md`.
+- [ ] Broader documentation impact was assessed using `feedback/context-revisions.md`.
+- [ ] Material, structural, security-uncertain, or contract-uncertain context changes have a pending ledger entry unless already reconciled.
 
 ## Architecture and design records
 
@@ -419,7 +423,7 @@ Apply when the change affects architectural boundaries or long-term decisions.
 - [ ] Source-of-truth ownership remains explicit.
 - [ ] Public and internal interfaces are intentional.
 - [ ] Trust boundaries remain explicit.
-- [ ] A material decision record was created or updated when required.
+- [ ] Material architectural decisions and their consequences are reflected in `docs/ARCHITECTURE.md`.
 - [ ] The decision includes alternatives, trade-offs, and consequences.
 - [ ] Conditions for revisiting the decision are recorded.
 - [ ] The implementation matches the approved decision.

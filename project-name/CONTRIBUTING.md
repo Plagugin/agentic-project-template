@@ -26,13 +26,13 @@ Before contributing, read the documents relevant to your change:
 - `docs/ARCHITECTURE.md` — current architecture and technical constraints
 - `docs/DEVELOPMENT.md` — setup, build, run, and local workflows
 - `docs/TESTING.md` — testing strategy and commands
-- `docs/SECURITY.md` — secure-development expectations
+- `docs/SECURE_DEVELOPMENT.md` — secure-development expectations
 - `docs/DEFINITION_OF_DONE.md` — completion criteria
 - `AGENTS.md` — instructions for coding agents
 - `.github/copilot-instructions.md` — repository-wide Copilot guidance
+- `.github/workflow-profiles.md` — Direct, Compact, and Extended workflow rules
 - `demands/` — structured demand documents
 - `plans/` — implementation plans
-- `docs/adr/` — accepted architecture decisions
 
 Remove references to files that do not exist.
 
@@ -51,7 +51,7 @@ Contributions may include:
 - security improvements
 - developer-experience improvements
 - operational improvements
-- architecture decision records
+- architecture documentation
 
 Do not begin substantial work until the intended outcome and ownership are clear.
 
@@ -113,7 +113,13 @@ Clarify:
 - migration or rollout needs
 - decision owner
 
-For substantial or ambiguous work, use a structured demand and implementation plan.
+Classify work using `.github/workflow-profiles.md`:
+
+- Direct work proceeds without demand and plan files.
+- Compact work uses concise demand and plan formats.
+- Extended work uses the full risk-appropriate formats.
+
+Extended triggers override a preference for brevity.
 
 ### Check existing work
 
@@ -122,7 +128,7 @@ Search for:
 - existing issues
 - active branches or pull requests
 - related implementation plans
-- accepted ADRs
+- current architectural decisions and constraints in `docs/ARCHITECTURE.md`
 - existing utilities and abstractions
 - similar tests
 - known limitations
@@ -376,24 +382,18 @@ Documentation must:
 
 ## Architecture decisions
 
-Create or update an ADR when a decision is:
+When implementation changes a material architectural choice, update `docs/ARCHITECTURE.md` so it describes:
 
-- significant
-- difficult to reverse
-- cross-cutting
-- security- or data-sensitive
-- likely to affect public contracts or deployment
-- likely to be questioned later
+- the current decision
+- why it was selected
+- important alternatives or constraints
+- resulting consequences and trade-offs
+- affected components and contracts
+- supporting repository evidence
 
-Use:
+Keep temporary proposals and option analysis in the demand or implementation plan. The architecture document should describe approved, implemented reality rather than speculative designs.
 
-```text
-docs/adr/NNNN-short-title.md
-```
-
-Follow `docs/adr/README.md`.
-
-Do not create ADRs for ordinary, local, and easily reversible implementation details.
+Do not introduce a separate architectural decision-record system unless the project explicitly adopts one for its own scale or governance requirements.
 
 ## Dependencies
 
@@ -463,7 +463,7 @@ For changes involving persisted data:
 
 ## Security and privacy
 
-Follow `docs/SECURITY.md`.
+Follow `docs/SECURE_DEVELOPMENT.md`.
 
 Security review is generally required for:
 
@@ -670,7 +670,7 @@ Split work when:
 - architecture and implementation should be reviewed separately
 - migrations need staged rollout
 - the change is too large to validate confidently
-- an ADR or demand should be reviewed before implementation
+- an architectural proposal or demand should be reviewed before implementation
 
 Do not split a change so narrowly that intermediate states become unsafe or untestable.
 
@@ -797,7 +797,7 @@ Coding agents must follow:
 - `.github/copilot-instructions.md`
 - applicable nested instruction files
 - project documentation
-- accepted ADRs
+- current architectural decisions in `docs/ARCHITECTURE.md`
 - approved demand and implementation plan
 
 Use agents according to role:
@@ -805,7 +805,7 @@ Use agents according to role:
 - **Demand intake:** structure rough ideas into a demand document
 - **Technical planner:** analyze the repository and produce an implementation plan
 - **Plan executor:** implement approved tasks and validate them
-- **Documentation initializer:** customize project documentation templates
+- **Documentation maintainer:** bootstrap, initialize, revise, or audit project documentation using repository evidence and the context-revision ledger
 
 Human review remains required for material product, architecture, security, data, and operational decisions.
 

@@ -27,6 +27,6 @@ coverage/
 *.bak
 *.orig
 
-# Developer-specific, non-shared summary files (see dev-notes/README.md)
-dev-notes/*
-!dev-notes/README.md
+# Developer-specific agent output (see reports/local/README.md)
+reports/local/*
+!reports/local/README.md

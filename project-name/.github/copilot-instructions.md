@@ -24,8 +24,9 @@ Read only the documents relevant to the current task:
 - Read `docs/DEVELOPMENT.md` for setup, build, generation, and development commands.
 - Read `docs/TESTING.md` before adding or modifying tests.
 - Read `docs/SECURE_DEVELOPMENT.md` for security-sensitive changes.
-- Read `docs/DEFINITION_OF_DONE.md` before reporting substantial work as complete.
-- Read applicable accepted decisions under `docs/adr/` before revisiting architectural choices.
+- Read `.github/workflow-profiles.md` when deciding whether work is Direct, Compact, or Extended.
+- Read `docs/DEFINITION_OF_DONE.md` before reporting Compact or Extended work as complete.
+- Read the current decisions and constraints in `docs/ARCHITECTURE.md` before revisiting architectural choices.
 
 Remove any reference whose file does not exist. When documentation conflicts with the current repository, identify the discrepancy rather than silently choosing one interpretation.
 
@@ -75,7 +76,7 @@ Preserve these critical invariants:
 
 Do not introduce a new framework, service, datastore, queue, architectural layer, or cross-cutting abstraction unless the task explicitly requires it and the decision is documented.
 
-When a task requires a material architectural decision, prepare or update an architecture decision record under `docs/adr/` when the repository's process requires one.
+When an implemented change materially affects architecture, update `docs/ARCHITECTURE.md` with the current decision, rationale, consequences, and supporting repository evidence.
 
 ## Scope and change discipline
 
@@ -207,7 +208,7 @@ Validate contract changes with the repository's established schema, contract, in
 
 ## Security and privacy
 
-Follow `docs/SECURITY.md` and applicable organizational requirements.
+Follow `docs/SECURE_DEVELOPMENT.md` and applicable organizational requirements.
 
 - Preserve authentication and authorization boundaries.
 - Enforce authorization on trusted server-side or service boundaries.
@@ -264,10 +265,19 @@ Document implemented behavior only. Keep commands executable and links repositor
 
 - Inspect the working-tree status and diff before editing.
 - Preserve pre-existing user changes.
+- Read `<git-dir>/agentic-workflow/commit-policy.md` before staging, committing, or integrating remote changes when it exists.
+- Never stage a path listed in `<git-dir>/agentic-workflow/protected-paths.txt`; use explicit staging and inspect the staged path list before committing.
+- When protected paths exist, replace direct `git pull` with fetch, protected-path comparison against the upstream, and integration only when no protected path changed remotely.
 - Do not use destructive Git commands or rewrite history.
 - Do not commit, push, merge, publish, deploy, release, open a pull request, create remote issues, or modify remote systems unless explicitly requested.
 - Do not include generated, temporary, secret, local-environment, or unrelated files in the change.
 - Follow the repository's commit and pull-request conventions only when those actions are requested.
+
+## Clone-local rules
+
+- Resolve `agentic-workflow/local-rules.md` through the active Git directory and apply every enabled rule relevant to the current work.
+- Stop and report conflicts instead of silently overriding a clone-local rule.
+- Preserve required validation that cannot run locally as remote or human validation, and report it truthfully as not run locally.
 
 ## Definition of done
 
@@ -279,10 +289,11 @@ A change is complete only when:
 - applicable formatting, linting, analysis, tests, and builds pass or limitations are reported
 - security, privacy, compatibility, migration, and operational effects are addressed
 - required documentation is current
+- documentation impact was assessed and qualifying context-revision work was recorded
 - the final diff contains no known unrelated or accidental changes
 - validation results, deviations, assumptions, and unresolved risks are reported truthfully
 
-See `docs/DEFINITION_OF_DONE.md` for the detailed project checklist. Read the full document only for substantial work; for a small, well-understood task, the "Quick Definition of Done" summary at the top of that file is normally sufficient.
+See `docs/DEFINITION_OF_DONE.md` for the detailed project checklist. Direct work normally uses the Quick Definition of Done; Compact or Extended work uses the applicable full sections.
 
 ## Completion response
 

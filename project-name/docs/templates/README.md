@@ -16,9 +16,18 @@ Conventions:
 - Keep language non-technical: explain impact and outcome, not implementation detail.
 - Keep code identifiers, file paths, and commands out of the prose; use the `<code>` tag sparingly only where a reader would need the exact name.
 - Distinguish what was verified from what remains open or at risk.
-- Output location follows the same precedence as the execution report: a user-specified path, otherwise `reports/summaries/<plan-file-stem>-summary.html` when `reports/` exists, otherwise `<plan-file-stem>-summary.html` at the repository root.
-- This file is a project deliverable tied to a plan/demand and is committed like any other generated documentation, unless the user says otherwise.
+- Output location is a user-specified path or `reports/stakeholder/<plan-file-stem>-summary.html`. Do not write generated summaries to the repository root.
+- This file is a project deliverable tied to a plan/demand. It is tracked in Shared mode and remains local when `.github/agentic-workflow-state.md` selects local-only operation.
 
 ## Developer-specific summaries
 
-For an ad hoc summary requested by the current developer on any topic, that is **not** meant to be committed, reuse this same HTML skeleton (or plain Markdown) but write it under `dev-notes/` instead — see `dev-notes/README.md`.
+For an ad hoc summary requested by the current developer on any topic that is **not** meant to be committed, reuse this same HTML skeleton (or plain Markdown) but write it under `reports/local/` instead — see `reports/local/README.md`.
+
+## Clone-local Git protection templates
+
+- `local-commit-policy-template.md` — human- and agent-readable rules copied to `<git-dir>/agentic-workflow/commit-policy.md`.
+- `local-protected-paths-template.txt` — machine-readable repository-relative paths copied to `<git-dir>/agentic-workflow/protected-paths.txt`.
+- `local-pre-commit-hook.sh` — optional hard guard that blocks commits containing protected paths.
+- `local-rules-template.md` — structured clone- or worktree-specific rules copied to `<git-dir>/agentic-workflow/local-rules.md`.
+
+The documentation maintainer customizes the policy, protected-path list, and initial rule registry. It must not overwrite an existing Git hook; when one exists, report that manual integration is required.

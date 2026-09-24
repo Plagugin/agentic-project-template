@@ -37,269 +37,193 @@ Use this precedence for the output:
 
 When the default path already contains an unrelated plan, create a uniquely named plan using a concise kebab-case demand title.
 
+When the workflow state is local-only, update an existing plan only when it is `Active` and belongs to the same work item. Never automatically select a `Completed`, `Abandoned`, or `Superseded` plan. Ask the user when several active plans match.
+
 Do not create `implementation-plan.md` or any other plan document directly at the project root. All implementation plans belong under `plans/`.
 
 Never overwrite an unrelated document.
 
-## Required plan format
+## Plan formats
 
-Use the following structure. Adapt optional subsections to project size, but preserve the top-level sections.
+Read `.github/workflow-profiles.md`. Use the Compact format unless the confirmed profile is Extended. Preserve task granularity, validation, dependencies, and stop conditions in both formats.
+
+### Compact plan
+
+Target 400–1,000 words. Omit optional rows that do not apply.
 
 ```markdown
 # Implementation Plan: <concise title>
 
-## Document status
+- **Status:** Draft | Ready for execution | Needs review | Blocked
+- **Readiness:** Ready | Ready with assumptions | Partially blocked | Blocked
+- **Workflow profile:** Compact
+- **Demand profile:** Compact | Extended | Direct
+- **Profile adjustment:** Unchanged | Escalated | Reduced | User-requested Compact
+- **Adjustment reason:** <one sentence>
+- **Demand:** `<path or direct prompt>`
+- **Repository basis:** <branch, snapshot, or current working repository>
+- **Work item:** <identifier>
+- **Source branch:** <branch>
+- **Base branch:** <branch or `Not yet confirmed`>
+- **Artifact scope:** Local-only cross-branch
+- **Lifecycle:** Active
+- **Complexity:** S | M
+- **Confidence:** High | Medium
+
+## Approach
+
+<One short paragraph describing the implementation direction, fit with existing patterns, and most important constraint.>
+
+## Change surface
+
+| Area | Planned change | Evidence |
+|---|---|---|
+| `<path or component>` | <change> | `<path>` |
+
+## Decisions
+
+Include only when meaningful alternatives existed.
+
+| ID | Decision | Rationale | Consequence |
+|---|---|---|---|
+| DEC-001 | <choice> | <reason> | <trade-off> |
+
+## Tasks
+
+| ID | Outcome and demand links | Areas | Depends on | Validation | Stop condition |
+|---|---|---|---|---|---|
+| TASK-001 | <outcome>; `FR-001`, `AC-001` | `<path>` | None | <test/check> | <condition or None> |
+
+## Risks, assumptions, and prerequisites
+
+| ID | Type | Detail | Response or invalidation impact |
+|---|---|---|---|
+| RISK-001 | Risk | <risk> | <mitigation> |
+| PLAN-ASM-001 | Assumption | <assumption and basis> | <impact if false> |
+
+## Completion requirements
+
+- satisfy <acceptance IDs>
+- preserve <critical convention or behavior>
+- update <directly affected documentation>
+- report deviations, validation results, unresolved items, and context-revision impact
+```
+
+### Extended plan
+
+Use this when an Extended trigger is confirmed.
+
+```markdown
+# Implementation Plan: <concise title>
+
+## Status
 
 - **Status:** Draft | Ready for execution | Needs review | Blocked
-- **Planning readiness:** Ready | Ready with assumptions | Partially blocked | Blocked
-- **Demand source:** `<relative path or direct prompt>`
-- **Repository basis:** <branch, snapshot, or `current working repository`; do not invent a commit>
-- **Overall complexity:** S | M | L | XL
-- **Planning confidence:** High | Medium | Low
+- **Readiness:** Ready | Ready with assumptions | Partially blocked | Blocked
+- **Workflow profile:** Extended
+- **Demand profile:** Compact | Extended | Direct
+- **Profile adjustment:** Unchanged | Escalated | Reduced | User-selected
+- **Adjustment reason:** <evidence-based reason>
+- **Extended triggers:** <confirmed triggers>
+- **Demand:** `<path or direct prompt>`
+- **Repository basis:** <branch, snapshot, or current working repository>
+- **Work item:** <identifier>
+- **Source branch:** <branch>
+- **Base branch:** <branch or `Not yet confirmed`>
+- **Artifact scope:** Local-only cross-branch
+- **Lifecycle:** Active
+- **Complexity:** M | L | XL
+- **Confidence:** High | Medium | Low
 
 ## Executive summary
 
-<Brief description of the recommended change, why it fits the project, and the most important risk or decision.>
+<Recommended approach, why it fits, and the most important risk or decision.>
 
-## Demand interpretation
+## Demand deltas and current state
 
-### Required outcomes
+Do not restate unchanged demand text.
 
-| Demand ID | Interpreted outcome | Planning status |
+| Item | Planning interpretation or repository finding | Evidence / effect |
 |---|---|---|
-| FR-001 | <outcome> | Covered / Assumed / Blocked |
+| `FR-001` | <clarification, conflict, or unchanged reference> | `<path>` or <planning effect> |
 
-### Constraints
+## Change surface
 
-| Constraint ID | Constraint | Planning effect |
-|---|---|---|
-| CON-001 | <constraint> | <effect> |
+| Area or contract | Current responsibility | Planned impact | Risk | Evidence |
+|---|---|---|---|---|
+| <area> | <responsibility> | <change> | Low / Medium / High | `<path>` |
 
-### Non-goals
+## Technical decisions
 
-- <explicit exclusion>
+### DEC-001 — <title>
 
-### Demand gaps and conflicts
-
-- <gap, contradiction, or `None material`>
-
-## Current system assessment
-
-### Repository map
-
-| Area | Responsibility | Evidence |
-|---|---|---|
-| <component> | <responsibility> | `<path>` — <symbol or section> |
-
-### Relevant current behavior
-
-<Describe the verified behavior and execution/data flow.>
-
-### Existing conventions to preserve
-
-- <convention with repository evidence>
-
-### Unknowns in the current system
-
-- <unknown and how the executor should verify it>
-
-## Change-impact analysis
-
-| Area | Impact | Reason | Risk |
-|---|---|---|---|
-| <component or contract> | None / Low / Medium / High | <reason> | <risk> |
-
-### Likely change locations
-
-- `<relative/path>` — <expected responsibility of the change>
-- `<directory/>` — <expected scope; mark as provisional where needed>
-
-### Explicitly unaffected areas
-
-- <area and reason>
-
-## Technical options and decisions
-
-### DEC-001 — <decision title>
-
-- **Question:** <decision being made>
-- **Demand drivers:** `FR-001`, `NFR-001`, `CON-001`
-- **Repository evidence:** `<path>` — <relevant fact>
-- **Options considered:**
-  1. **<option>:** <summary, advantages, disadvantages>
-  2. **<option>:** <summary, advantages, disadvantages>
+- **Question:** <decision>
+- **Drivers:** <requirement and constraint IDs>
+- **Options:** <concise comparison>
 - **Recommendation:** <selected option>
-- **Rationale:** <why it fits this project>
-- **Consequences:** <positive and negative>
+- **Rationale:** <repository-specific reason>
+- **Consequences:** <important benefits and costs>
 - **Confidence:** High | Medium | Low
-- **Revisit when:** <condition that invalidates or changes the decision>
+- **Revisit when:** <invalidation condition>
 
-## Target technical design
+## Target design
 
-### Architecture and responsibilities
-
-<Describe component boundaries and responsibility changes.>
-
-### Control and data flow
-
-<Describe the intended flow from entry point through persistence/integration and response.>
-
-### Interfaces and contracts
-
-| Interface | Planned change | Compatibility |
-|---|---|---|
-| <API/event/module/schema> | <change> | Compatible / Breaking / Internal |
-
-### Data and state
-
-<Describe models, persistence, migrations, state transitions, transactions, concurrency, or `No data impact`.>
-
-### Error handling and resilience
-
-<Expected validation, failures, retries, idempotency, recovery, and user-visible behavior.>
-
-### Security and privacy
-
-<Authorization, authentication, trust boundaries, input handling, secrets, personal data, auditability, or `No additional impact identified`.>
-
-### Performance and scalability
-
-<Expected impact, limits, hot paths, caching, query behavior, load validation, or `No material impact expected`.>
-
-### Observability and operations
-
-<Logging, metrics, tracing, alerts, dashboards, support diagnostics, and operational ownership.>
-
-### Compatibility, migration, and rollout
-
-<Backwards compatibility, data migration, feature flags, deployment order, staged release, rollback, or `Not applicable`.>
+- **Responsibilities and boundaries:** <changes>
+- **Control and data flow:** <intended flow>
+- **Interfaces and compatibility:** <contracts and compatibility>
+- **Data and migration:** <state, integrity, transactions, migration, or no impact>
+- **Security and privacy:** <trust, authorization, input, secrets, sensitive data>
+- **Resilience and operations:** <failure handling, observability, rollout, rollback>
 
 ## Implementation sequence
 
-### Phase 1 — <phase name>
+### TASK-001 — <title>
 
-#### TASK-001 — <task title>
-
-- **Purpose:** <coherent implementation outcome>
+- **Outcome:** <coherent implementation result>
 - **Demand links:** `FR-001`, `AC-001`
 - **Depends on:** None | `TASK-xxx` | external decision
-- **Parallel group:** None | `PG-1` (only when the user requested a parallelizable breakdown; see task-and-validation-sequencing.md)
-- **Complexity:** S | M | L | XL
-- **Confidence:** High | Medium | Low
-- **Affected areas:** `<path or component>`
-- **Required changes:**
-  - <behavioral or structural change>
-- **Implementation guidance:**
-  - <important architectural constraints and patterns to follow>
-- **Do not:**
-  - <scope guardrail or prohibited shortcut>
-- **Validation:**
-  - <tests and checks>
-- **Completion evidence:**
-  - <what the executor must be able to report or demonstrate>
-- **Risks and cautions:**
-  - <task-specific risk>
-- **Stop conditions:**
-  - <condition requiring user or architect input, or `None identified`>
+- **Parallel group:** None | `PG-1`
+- **Complexity / confidence:** S | M | L / High | Medium | Low
+- **Areas:** `<path or component>`
+- **Required changes:** <behavioral or structural changes>
+- **Constraints:** <patterns and prohibited shortcuts>
+- **Validation:** <tests and checks>
+- **Completion evidence:** <required evidence>
+- **Risks:** <task-specific risk>
+- **Stop conditions:** <condition or None>
 
-## Test and validation plan
+## Validation and traceability
 
-### Traceability matrix
-
-| Requirement / criterion | Planned tasks | Validation |
+| Requirement / criterion | Tasks | Validation |
 |---|---|---|
 | FR-001 / AC-001 | TASK-001 | <test or check> |
 
-### Automated testing
+- **Regression focus:** <behavior>
+- **Manual or operational checks:** <checks or None>
 
-- **Unit:** <scope and likely locations>
-- **Integration:** <scope and likely locations>
-- **Contract:** <scope or `Not applicable`>
-- **End-to-end:** <scope or `Not applicable`>
-- **Migration:** <scope or `Not applicable`>
-- **Security:** <scope or `Not applicable`>
-- **Performance:** <scope or `Not applicable`>
+## Delivery, dependencies, and risks
 
-### Manual and operational validation
+- **Documentation:** <updates>
+- **Compatibility and rollout:** <sequence, flags, rollback>
+- **Internal dependencies:** <items>
+- **External dependencies:** <items>
+- **Required decisions:** <owner and affected tasks>
 
-- <manual workflow, deployment check, telemetry check, or `None required`>
-
-### Regression focus
-
-- <existing behavior most likely to regress>
-
-## Documentation and delivery updates
-
-- <documentation, changelog, runbook, API reference, configuration, support notes>
-- <state `None required` where justified>
-
-## Risks and mitigations
-
-| Risk ID | Risk | Likelihood | Impact | Mitigation / fallback |
-|---|---|---|---|---|
-| RISK-001 | <risk> | Low / Medium / High | Low / Medium / High | <mitigation> |
-
-## Dependencies and prerequisites
-
-### Internal dependencies
-
-- <dependency or `None identified`>
-
-### External dependencies
-
-- <dependency or `None identified`>
-
-### Decisions or information required
-
-- <question, owner, and affected tasks>
-
-## Assumptions
-
-- **PLAN-ASM-001:** <planning assumption>
-  - **Basis:** <demand statement or repository evidence>
-  - **Invalidation impact:** <what changes if false>
+| ID | Risk or assumption | Response / invalidation impact |
+|---|---|---|
+| RISK-001 | <risk> | <mitigation> |
+| PLAN-ASM-001 | <assumption and basis> | <impact if false> |
 
 ## Executor handoff
 
-### Recommended execution order
-
-1. `TASK-001`
-2. `TASK-002`
-
-### Executor must preserve
-
-- <critical behavior, compatibility requirement, or project convention>
-
-### Executor must verify before editing
-
-- <uncertain repository fact or prerequisite>
-
-### Executor stop and escalate conditions
-
-- <material condition under which implementation should pause>
-
-### Required completion report
-
-The executor must report:
-
-- tasks completed
-- files changed
-- tests and checks run, with outcomes
-- acceptance criteria satisfied
-- deviations from this plan
-- newly discovered risks or assumptions
-- unresolved items
-- rollback or migration status where applicable
-
-## Planning completeness review
-
-- **Requirements covered:** <count or summary>
-- **Acceptance criteria covered:** <count or summary>
-- **Blocked items:** <count and identifiers>
-- **Unresolved decisions:** <count and identifiers>
-- **Ready for executor:** Yes | Yes, with stated assumptions | No
-- **Planner conclusion:** <two or three sentences>
+- **Execution order:** `TASK-001`, `TASK-002`
+- **Must preserve:** <behavior or constraint>
+- **Verify before editing:** <uncertain fact>
+- **Stop and escalate when:** <conditions>
+- **Completion report:** tasks, files, validation, acceptance, deviations, unresolved items, migration or rollback status, and context-revision impact
 ```
+
+Include the work-item, branch, artifact-scope, and lifecycle rows only when the workflow state is `Local-only` or `Local-only requested`.
 
 ## Material blocker rules
 
@@ -326,7 +250,10 @@ When planning is `Blocked` or `Partially blocked`, also create a blocker report 
 
 Before completing the plan, verify:
 
+- The confirmed workflow profile follows `.github/workflow-profiles.md`.
+- The demand profile, adjustment, basis, and Extended triggers are explicit.
 - The selected demand source is explicit.
+- Local-only plans match the demand's work item, source branch, base branch, artifact scope, and work-item-prefixed stem.
 - The plan reflects the actual repository rather than a generic architecture.
 - Repository claims include evidence paths.
 - Current state and target state are clearly separated.
@@ -339,18 +266,29 @@ Before completing the plan, verify:
 - Assumptions, unknowns, and blockers are visible.
 - No source code or non-plan file was modified.
 - The executor handoff is actionable without being a code patch.
+- Compact plans reference demand IDs and repository documentation instead of repeating their prose.
+- Irrelevant sections and repeated `None` entries were omitted.
+- Document brevity did not remove necessary tasks, validation, dependencies, or stop conditions.
 
 ## Completion response
 
 After creating or updating the plan, respond with only:
 
 1. the plan file path
-2. the demand source used
-3. the recommended approach in one sentence
-4. planning readiness
-5. overall complexity and confidence
-6. the number of tasks, decisions, assumptions, and blockers
-7. whether the plan uses parallel task groups (and how many), or `Sequential only`
-8. any material issue that prevents execution, and the path to any blocker report created under `feedback/`
+2. the confirmed workflow profile and any adjustment from the demand
+3. the demand source used
+4. the recommended approach in one sentence
+5. planning readiness
+6. overall complexity and confidence
+7. the number of tasks, decisions, assumptions, and blockers
+8. whether the plan uses parallel task groups (and how many), or `Sequential only`
+9. any material issue that prevents execution, and the path to any blocker report created under `feedback/`
+
+When Direct was confirmed and the user chose to skip the plan file, respond with only:
+
+1. `Workflow profile: Direct`
+2. the classification basis
+3. `Plan file: Not created`
+4. the recommended direct next action
 
 Do not implement the plan.

@@ -1,6 +1,6 @@
-# Subagent: Operational Docs
+# Subagent: Operational Documentation Maintenance
 
-Use this module when customizing `docs/DEVELOPMENT.md`, `docs/TESTING.md`, or `docs/SECURITY.md`. Read `evidence-gathering.md` first if the evidence inventory has not been built yet.
+Use this module when maintaining `docs/DEVELOPMENT.md`, `docs/TESTING.md`, or `docs/SECURE_DEVELOPMENT.md`. Read `evidence-gathering.md` first if the evidence inventory has not been built yet.
 
 ## `docs/DEVELOPMENT.md`
 
@@ -39,7 +39,7 @@ Document:
 
 Do not claim a test level exists merely because the template contains it.
 
-## `docs/SECURITY.md`
+## `docs/SECURE_DEVELOPMENT.md`
 
 Document only non-sensitive, repository-appropriate guidance:
 

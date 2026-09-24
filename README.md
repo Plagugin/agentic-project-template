@@ -1,4 +1,4 @@
-# Using This Project Template
+# Agentic Project Template
 
 This guide explains the first steps for creating a new project from this template and preparing it for use with GitHub Copilot CLI.
 
@@ -9,16 +9,16 @@ This is the README for the **template itself**, not the README for the project c
 The template includes:
 
 - repository-wide Copilot instructions
-- reusable custom agents for demand intake, planning, execution, and documentation initialization
+- reusable custom agents for demand intake, planning, execution, and documentation maintenance
 - agent workflow guidance
 - project context and architecture templates
 - development and testing guides
 - secure-development guidance
 - a Definition of Done
 - contribution guidance
-- Architecture Decision Record templates
 - a Markdown-based feedback loop for blockers and required human actions
-- a plain-language HTML stakeholder-summary template and a gitignored space for developer-specific summaries
+- deterministic prompt macros for recurring output workflows
+- a standard `reports/` hierarchy for tracked deliverables and ignored developer-specific output
 
 The intended workflow is:
 
@@ -35,11 +35,14 @@ Implementation plan                  │
     ↓                                │
 Plan Executor Agent  ─────────────────┘
     ↓
-Implementation, validation, completion report,
-and (optionally) a stakeholder-facing HTML summary
+Implementation, validation, documentation-impact assessment
+    ↓                                      │
+Context revision ledger (when warranted)  │
+    ↓                                      │
+Repository Documentation Maintainer ──────┘
 ```
 
-When a demand or plan cannot be completed as written, or a task depends on a person, the responsible agent records that under `feedback/` instead of stalling silently, so the next pass through demand intake or planning can turn it into an updated requirement or decision. See `feedback/README.md` once the template is instantiated.
+When a demand or plan cannot be completed as written, or a task depends on a person, the responsible agent records that under `feedback/` instead of stalling silently, so the next pass through demand intake or planning can turn it into an updated requirement or decision. Completed implementation also produces a documentation-impact assessment. Material or structural context changes are recorded in `feedback/context-revisions.md` for the documentation maintainer to reconcile.
 
 ## Template structure
 
@@ -50,11 +53,15 @@ project-name/
 ├── CONTRIBUTING.md
 │
 ├── .github/
+│   ├── agent-macros.md
+│   ├── agentic-workflow-state.md
 │   ├── copilot-instructions.md
+│   ├── template-help.md
+│   ├── workflow-profiles.md
 │   └── agents/
 │       ├── demand-intake.agent.md
 │       ├── plan-executor.agent.md
-│       ├── repository-documentation-initializer.agent.md
+│       ├── repository-documentation-maintainer.agent.md
 │       └── technical-planner.agent.md
 │
 ├── demands/
@@ -68,11 +75,18 @@ project-name/
 ├── feedback/
 │   ├── README.md
 │   ├── blocker-template.md
+│   ├── context-revisions.md
 │   ├── human-action-template.md
 │   └── <demand-or-plan-slug>-blocker.md / -human-action.md
 │
-├── dev-notes/
-│   └── README.md   (everything else here is developer-local and gitignored)
+├── reports/
+│   ├── README.md
+│   ├── execution/
+│   │   └── README.md
+│   ├── stakeholder/
+│   │   └── README.md
+│   └── local/
+│       └── README.md   (everything else here is developer-local and gitignored)
 │
 └── docs/
     ├── PROJECT_CONTEXT.md
@@ -81,32 +95,24 @@ project-name/
     ├── TESTING.md
     ├── SECURE_DEVELOPMENT.md
     ├── DEFINITION_OF_DONE.md
-    ├── templates/
-    │   ├── README.md
-    │   └── stakeholder-summary-template.html
-    └── adr/
+    └── templates/
         ├── README.md
-        └── 0000-template.md
+        ├── stakeholder-summary-template.html
+        ├── local-commit-policy-template.md
+        ├── local-protected-paths-template.txt
+        ├── local-pre-commit-hook.sh
+        └── local-rules-template.md
 ```
 
 - `demands/` holds structured demand documents produced by the `demand-intake` agent.
 - `plans/` holds implementation plans produced by the `technical-planner` agent, one per demand.
-- `feedback/` holds short blocker reports and human-action requests that any agent may raise when a demand or plan cannot proceed as written, or when a person must act. `demand-intake` and `technical-planner` check it before producing new or revised documents, closing the loop even when documents are only ever passed between agents by a human copying files around.
-- `dev-notes/` holds ad hoc, developer-specific summaries on any topic. It is excluded from version control (`.gitignore`) except for its `README.md`.
-- `docs/templates/` holds the reusable stakeholder-summary HTML template the `plan-executor` agent uses to produce a plain-language, non-technical completion summary.
-- `docs/adr/` holds durable architectural decision records, distinct from demands and plans.
-
-A personal Copilot instruction file may also be installed outside the repository:
-
-```text
-~/.copilot/copilot-instructions.md
-```
-
-On Windows, this normally corresponds to:
-
-```text
-%USERPROFILE%\.copilot\copilot-instructions.md
-```
+- `feedback/` holds blocker reports, human-action requests, and the context-revision ledger. The first two feed discoveries back into demands and plans; the ledger feeds implementation evidence into repository documentation maintenance.
+- `.github/agent-macros.md` defines exact, lowercase `m-` prompt macros that agents load only when the first prompt token invokes one.
+- `.github/agentic-workflow-state.md` records whether workflow artifacts are shared or local-only and defines branch-aware naming and selection policy.
+- `.github/template-help.md` is the static, topic-filtered source for `m-help`.
+- `.github/workflow-profiles.md` defines Direct, Compact, and Extended classification, inheritance, escalation, and document-density rules.
+- `reports/execution/` and `reports/stakeholder/` hold project deliverables that are tracked in Shared mode and remain local in local-only mode. `reports/local/` always holds ignored developer-specific output.
+- `docs/templates/` holds the stakeholder-summary HTML template and clone-local policy, protection, and rule templates.
 
 ## Prerequisites
 
@@ -118,7 +124,7 @@ Before using the template, confirm that you have:
 - the language runtimes and development tools required by the new project
 - permission to create or modify the target repository
 
-The documentation initializer can inspect a repository and customize Markdown files, but it cannot determine business ownership, security policy, or project intent when those facts are not present. Be prepared to review and complete those areas manually.
+The documentation maintainer can inspect a repository and maintain Markdown files, but it cannot determine business ownership, security policy, or project intent when those facts are not present. Be prepared to review and complete those areas manually.
 
 ## 1. Create the project
 
@@ -162,19 +168,22 @@ If they must stay local to you only, do not add them to the project's own `.giti
 cat >> .git/info/exclude <<'EOF'
 # Local-only: agentic workflow files (Copilot CLI template), never shared
 .github/agents/
+.github/agentic-workflow-state.md
+.github/agent-macros.md
+.github/template-help.md
+.github/workflow-profiles.md
 .github/copilot-instructions.md
 AGENTS.md
 demands/
 plans/
 feedback/
-dev-notes/
-docs/adr/
+reports/
 docs/templates/
 docs/PROJECT_CONTEXT.md
 docs/ARCHITECTURE.md
 docs/DEVELOPMENT.md
 docs/TESTING.md
-docs/SECURITY.md
+docs/SECURE_DEVELOPMENT.md
 docs/DEFINITION_OF_DONE.md
 EOF
 ```
@@ -185,24 +194,27 @@ On PowerShell:
 Add-Content .git\info\exclude @"
 # Local-only: agentic workflow files (Copilot CLI template), never shared
 .github/agents/
+.github/agentic-workflow-state.md
+.github/agent-macros.md
+.github/template-help.md
+.github/workflow-profiles.md
 .github/copilot-instructions.md
 AGENTS.md
 demands/
 plans/
 feedback/
-dev-notes/
-docs/adr/
+reports/
 docs/templates/
 docs/PROJECT_CONTEXT.md
 docs/ARCHITECTURE.md
 docs/DEVELOPMENT.md
 docs/TESTING.md
-docs/SECURITY.md
+docs/SECURE_DEVELOPMENT.md
 docs/DEFINITION_OF_DONE.md
 "@
 ```
 
-Trim the list to only the paths this template actually added on top of the existing project — do not exclude a file the project already tracked before the template was introduced (for example, an existing `AGENTS.md` or `docs/ARCHITECTURE.md` that you extended rather than created). Where the template's file replaced or merged into an existing tracked file, keep it tracked and instead move any content that must stay private into `dev-notes/` or another excluded path.
+Trim the list to only paths the template added as untracked files. Git ignore rules cannot protect a path that the repository already tracks.
 
 Confirm the result:
 
@@ -217,6 +229,96 @@ git rm -r --cached <path>
 ```
 
 `.git/info/exclude` lives inside the local `.git` directory, so it is never cloned, pushed, or seen by anyone else — each collaborator who wants the same behavior must add their own entries locally. This only controls whether Copilot's own workflow files are tracked; if the underlying project also needs product-code changes ignored, handle that through the project's normal `.gitignore` instead.
+
+The documentation maintainer records the durable decision in `.github/agentic-workflow-state.md`. In local-only mode it also records the base branch, work-item-prefixed naming, cross-branch retention, artifact-selection policy, and whether protection was verified. A template-added path that should be untracked remains `Pending human action` until it is removed from Git's index. An intentional local replacement of an existing tracked path follows the protected-override workflow below instead.
+
+### Protecting local replacements of tracked files
+
+An existing project may already track `AGENTS.md`, `docs/ARCHITECTURE.md`, `.github/copilot-instructions.md`, or another path that you intentionally replace only in your clone. Do not add that path to `.git/info/exclude` and do not remove it from shared history.
+
+The documentation maintainer registers it under the active Git directory:
+
+```text
+<git-dir>/agentic-workflow/commit-policy.md
+<git-dir>/agentic-workflow/protected-paths.txt
+<git-dir>/agentic-workflow/local-rules.md
+```
+
+It records the shared blob baseline and tells you to apply:
+
+```powershell
+git update-index --skip-worktree AGENTS.md
+```
+
+Verify the flag:
+
+```powershell
+git ls-files -v AGENTS.md
+```
+
+Uppercase `S` indicates `skip-worktree`. This flag reduces routine staging risk, but the protected-path policy remains authoritative because upstream changes and branch switches can still require reconciliation.
+
+Before every commit, agents must inspect staged paths and refuse to commit a protected file. `docs/templates/local-pre-commit-hook.sh` can also be installed as a clone-local hard guard when no existing hook would be overwritten.
+
+### Clone-specific rules
+
+Use `m-rule` for machine-, clone-, or worktree-specific instructions that should never enter shared repository history:
+
+```text
+m-rule add Never run tests tagged remote-only on this machine; request execution on the remote test PC instead.
+m-rule list
+m-rule show LOCAL-RULE-001
+m-rule disable LOCAL-RULE-001
+```
+
+Rules are stored under:
+
+```text
+<git-dir>/agentic-workflow/local-rules.md
+```
+
+Agents read enabled rules before covered commands, file changes, validation, and remote operations. Rules can prohibit, require, require confirmation, express a preference, or require a warning.
+
+A local rule cannot grant permissions, weaken safety, authorize destructive or remote activity, or turn skipped validation into success. When a required check cannot run on the current machine, agents retain it as remote or human validation and report it as not run locally.
+
+### Pulling when protected paths exist
+
+Agents must not run direct `git pull` when the protected-path list is present. A requested pull becomes:
+
+1. fetch the configured upstream
+2. compare `HEAD..@{upstream}` for every protected path
+3. stop before integration if the upstream added, changed, renamed, or deleted a protected path
+4. report the affected paths for explicit reconciliation
+5. integrate only when no protected path changed
+
+This means a remote change to a locally replaced `AGENTS.md` or `docs/ARCHITECTURE.md` is observed but not accepted into the working tree. The agent also does not silently integrate the rest of that remote update, because those commits may depend on the protected change.
+
+The optional pre-commit hook guards commits only. Git has no standard pre-pull hook, so remote-update protection depends on agents following the fetch-before-integrate protocol. A manual `git pull` outside that workflow can bypass the guard.
+
+Typical inspection commands are:
+
+```powershell
+git fetch
+git rev-parse --abbrev-ref --symbolic-full-name '@{upstream}'
+git diff --name-status 'HEAD..@{upstream}' -- AGENTS.md
+git diff --name-status 'HEAD..@{upstream}' -- docs/ARCHITECTURE.md
+```
+
+### Switching branches with local-only artifacts
+
+Ignored files are shared across ordinary branch switches in the same working directory. Keep completed demand and plan files as local history, but do not select them merely because they exist.
+
+Local-only demands and plans use ticket-prefixed names and record:
+
+- work item
+- source branch
+- base branch
+- artifact scope
+- lifecycle
+
+Agents prefer an explicit artifact path. Otherwise they select only an `Active` artifact matching the current work item or branch, ask when several match, and treat cross-branch plans as history until revalidated and explicitly confirmed.
+
+Use separate Git worktrees for concurrent ticket branches that need isolated local artifacts. Each worktree has its own working directory and must receive its own copy of the local-only template files and tracking verification.
 
 ## 2. Create the project README
 
@@ -255,61 +357,7 @@ Suggested structure:
 
 Do not use the template-user README as the generated project’s product README.
 
-## 3. Install the personal Copilot instructions
-
-The template repository contains project-specific instructions under:
-
-```text
-.github/copilot-instructions.md
-```
-
-Personal instructions that should apply across all projects belong outside the repository:
-
-```text
-~/.copilot/copilot-instructions.md
-```
-
-Create the directory when needed:
-
-```sh
-mkdir -p ~/.copilot
-```
-
-On PowerShell:
-
-```powershell
-New-Item -ItemType Directory -Force "$HOME\.copilot"
-```
-
-Copy your reusable global instruction file into that directory:
-
-```sh
-cp <path-to-global-file>/copilot-instructions.md \
-  ~/.copilot/copilot-instructions.md
-```
-
-On PowerShell:
-
-```powershell
-Copy-Item `
-  "<path-to-global-file>\copilot-instructions.md" `
-  "$HOME\.copilot\copilot-instructions.md"
-```
-
-Do not copy the project-specific `.github/copilot-instructions.md` into the global location.
-
-The global file should contain universal behavior such as:
-
-- inspect before editing
-- preserve existing user changes
-- avoid destructive Git commands
-- use supported project commands
-- validate work honestly
-- do not deploy, publish, commit, or push without explicit instruction
-
-The repository file should contain project-specific facts, conventions, paths, and commands.
-
-## 4. Open the project in Copilot CLI
+## 3. Open the project in Copilot CLI
 
 Start Copilot CLI from the repository root.
 
@@ -321,18 +369,15 @@ Verify that the repository instructions are discovered:
 
 You should see applicable sources such as:
 
-- the personal Copilot instruction file
 - `.github/copilot-instructions.md`
 - `AGENTS.md`
 - applicable nested instruction files, when added later
 
 The files under `docs/` are not intended to be loaded in full for every interaction. Agents should read them when relevant to the task.
 
-## 5. Customize the template documentation
+## 4. Establish and maintain the documentation baseline
 
-Before implementing the first feature, customize the copied templates for the actual repository.
-
-Select the documentation initializer:
+Select the documentation maintainer:
 
 ```text
 /agent
@@ -341,13 +386,23 @@ Select the documentation initializer:
 Choose:
 
 ```text
-repository-documentation-initializer
+repository-documentation-maintainer
 ```
 
-Then use a prompt similar to:
+The maintainer supports four modes:
+
+- **Bootstrap** — capture known project purpose, users, constraints, ownership, and intended direction before enough implementation exists to document a real architecture.
+- **Initialize** — replace templates using evidence from an established repository or an implemented greenfield foundation.
+- **Revise** — process pending entries in `feedback/context-revisions.md` after implementation.
+- **Audit** — inspect the repository for documentation drift without relying on a pending ledger entry.
+
+### Existing or established project
+
+Run the maintainer in `Initialize` mode immediately after adding the template files:
 
 ```text
-Initialize the project documentation from the copied templates.
+Initialize the project documentation from the copied templates in an
+established repository.
 
 Inspect the repository before editing. Read the source code, manifests,
 scripts, CI workflows, test configuration, existing documentation, and
@@ -379,11 +434,23 @@ Requirements:
 10. Review the complete documentation diff before completing.
 ```
 
-The initializer is deliberately restricted to documentation and instruction files. It should not implement project code.
+### Greenfield project
 
-## 6. Review the initialized documentation
+Do not ask the maintainer to invent an implemented architecture before one exists. Use this sequence:
 
-Do not accept the generated documentation without review.
+1. Run `repository-documentation-maintainer` in `Bootstrap` mode to record known purpose, users, constraints, ownership, and intended direction. Leave unsupported implementation details as `Not yet confirmed`.
+2. Create and execute a foundation demand covering the initial runtime, repository layout, build tooling, test harness, CI, deployment assumptions, and approved architecture decisions.
+3. Let `plan-executor` assess the foundation's documentation impact and add a pending context-revision entry.
+4. Run `repository-documentation-maintainer` in `Revise` mode. It will use the ledger, plans, changes, and current repository evidence to initialize or revise the contextual documents.
+5. Review the resulting baseline before beginning the first Compact or Extended product feature.
+
+This is not a one-time setup step. Every executor run scores documentation impact. When the score is material or structural, the executor records a pending entry and recommends another `Revise` pass.
+
+The maintainer is deliberately restricted to documentation, instruction files, the context-revision ledger lifecycle fields, and the documented `.git/info/exclude` exception. It must not implement project code.
+
+## 5. Review the initialized documentation
+
+Do not accept bootstrapped, initialized, or revised documentation without review.
 
 Check the following files:
 
@@ -435,6 +502,8 @@ Review:
 - security boundaries
 - deployment model
 
+This template intentionally keeps material implemented decisions in `docs/ARCHITECTURE.md` instead of providing a separate decision-record system. A project with exceptional scale or governance needs may introduce one explicitly as a project-specific choice.
+
 ### `docs/DEVELOPMENT.md`
 
 Execute or independently verify the important commands:
@@ -472,7 +541,7 @@ Examples include:
 - migration rehearsal
 - release approval
 
-## 7. Resolve remaining placeholders
+## 6. Resolve remaining placeholders
 
 Search the documentation for template residue.
 
@@ -507,7 +576,7 @@ Not applicable
 
 Generic example diagrams, commands, project names, and ownership values should be removed or replaced.
 
-## 8. Decide which agents belong to the project
+## 7. Decide which agents belong to the project
 
 The project contains these repository-level agents:
 
@@ -543,21 +612,102 @@ Use it when:
 - material decisions are resolved
 - the repository is ready for code changes
 
-### `repository-documentation-initializer`
+### `repository-documentation-maintainer`
 
-Customizes the template documentation using repository evidence.
+Bootstraps, initializes, revises, or audits repository documentation using current evidence and pending context-revision entries.
 
 Use it during:
 
-- initial project setup
+- early greenfield intent capture
+- established-project initialization
+- post-foundation documentation baselining
 - documentation refreshes
 - major architecture or workflow changes
+- periodic drift audits
 
-The documentation initializer is configured for manual use only.
+The documentation maintainer is configured for manual use only. The executor recommends it when the documentation-impact threshold is reached; the user selects it explicitly.
 
-## 9. Run the first demand-to-execution workflow
+### Prompt macros
 
-For the first substantial change:
+The template includes exact, lowercase prompt macros defined in `.github/agent-macros.md`. A macro is invoked only when it is the first standalone prompt token; ordinary requests containing words such as "HTML", "text", or "rule" retain their normal meaning.
+
+Show template help or a specific help topic:
+
+```text
+m-help
+m-help agents
+m-help workflows
+m-help setup
+m-help git
+m-help branches
+m-help rules
+m-help reports
+m-help costs
+```
+
+Use `m-help all` only when the complete guide is needed. Native Copilot CLI help remains available through `/help`.
+
+Manage clone-specific rules:
+
+```text
+m-rule add Never run hardware integration tests on this machine; use the remote test PC.
+m-rule list
+```
+
+Create a stakeholder-facing HTML summary of completed implementation work:
+
+```text
+m-html
+```
+
+Add an optional focus or destination:
+
+```text
+m-html focus on customer impact and save to reports/stakeholder/release-summary.html
+```
+
+Create a local, copy-ready plain-text artifact:
+
+```text
+m-text list the files changed during the last execution
+```
+
+The default output paths are:
+
+```text
+reports/stakeholder/<plan-file-stem>-summary.html
+reports/local/<derived-topic>.txt
+```
+
+Technical execution reports use:
+
+```text
+reports/execution/<plan-file-stem>-execution-report.md
+```
+
+Generated reports must not fall back to the repository root.
+
+### Workflow profiles
+
+Agents classify work using `.github/workflow-profiles.md`:
+
+| Profile | Use |
+|---|---|
+| Direct | Localized, clear, reversible, low-risk work; no demand or plan file |
+| Compact | Bounded work needing traceability, several tasks, or explicit validation |
+| Extended | Material contract, data, security, architecture, migration, deployment, compatibility, coordination, reversibility, or uncertainty |
+
+Classification order:
+
+1. Any confirmed Extended trigger selects Extended.
+2. Direct is allowed only when every Direct condition is confirmed.
+3. Everything else is Compact.
+
+Demand intake makes the provisional recommendation. When it recommends Direct, it asks whether to skip the demand or create a Compact demand for traceability. Technical planning inherits the demand profile, verifies it from repository evidence, and records any escalation or reduction. A user-selected profile is not reduced without approval.
+
+## 8. Run the first demand-to-execution workflow
+
+For Compact or Extended work:
 
 ### A. Create the demand
 
@@ -579,6 +729,7 @@ Review the resulting demand before planning. It will be created under `demands/`
 
 Confirm:
 
+- workflow profile and classification basis
 - problem statement
 - goals
 - scope
@@ -607,6 +758,8 @@ stop conditions.
 
 Review material decisions before execution. The plan will be created under `plans/`, named after its source demand.
 
+Confirm that the plan records the demand profile, the confirmed planning profile, and any evidence-based adjustment.
+
 ### C. Execute the plan
 
 Select:
@@ -627,33 +780,14 @@ and remaining risks.
 
 Do not ask the executor to make unresolved product or architectural decisions silently.
 
-## 10. Use ADRs only when appropriate
+After execution, review its context revision assessment:
 
-The ADR directory contains:
+- **0–2:** no maintainer pass is normally needed.
+- **3–5:** run the maintainer in `Revise` mode when practical.
+- **6 or more:** run `Revise` before the next substantial feature.
+- **Security or contract uncertainty:** treat revision as required.
 
-```text
-docs/adr/
-├── README.md
-└── 0000-template.md
-```
-
-ADRs are distinct from the demand and plan documents in `demands/` and `plans/`: an ADR records a durable architectural decision and its trade-offs, while a demand records requirements and a plan records the executor-facing task breakdown. Link between them where relevant instead of duplicating content.
-
-Create an ADR when a decision is:
-
-- architecturally significant
-- difficult to reverse
-- cross-cutting
-- related to security, data, compatibility, deployment, or operations
-- likely to be questioned later
-
-Do not create ADRs for every implementation detail.
-
-A useful rule is:
-
-> Create an ADR when a future developer or agent is likely to ask why the project chose this approach.
-
-## 11. Add path-specific instructions only when needed
+## 9. Add path-specific instructions only when needed
 
 The initial template intentionally does not include many path-specific instruction files.
 
@@ -675,9 +809,9 @@ security-sensitive.instructions.md
 
 Use them when a category of files needs specialized guidance that should not be loaded for every task.
 
-Avoid duplicating the full global or repository instruction sets.
+Avoid duplicating the full repository instruction set.
 
-## 12. Establish the initial baseline
+## 10. Establish the initial baseline
 
 After the documentation has been customized and reviewed:
 
@@ -703,14 +837,14 @@ Project template initialized
 - development and testing workflows documented
 - secure-development guidance reviewed
 - Definition of Done configured
-- ADR process available
+- material architectural decisions summarized in `docs/ARCHITECTURE.md`
 ```
 
 Do not claim that project setup is complete when material ownership, security, architecture, or command information remains unverified.
 
-## 13. Recommended daily workflow
+## 11. Recommended daily workflow
 
-For a small and obvious change:
+For Direct work:
 
 1. Read applicable instructions.
 2. Inspect the relevant code and tests.
@@ -719,7 +853,7 @@ For a small and obvious change:
 5. Review the diff.
 6. Report the result.
 
-For a substantial change:
+For Compact or Extended work:
 
 1. Create or refine the demand.
 2. Review the demand.
@@ -727,8 +861,10 @@ For a substantial change:
 4. Review material decisions.
 5. Execute selected tasks.
 6. Validate against the acceptance criteria.
-7. Update documentation and ADRs where required.
-8. Complete the Definition of Done.
+7. Update directly affected documentation, including `docs/ARCHITECTURE.md` when architectural context changed.
+8. Review the executor's context revision assessment.
+9. Run `repository-documentation-maintainer` in `Revise` mode when recommended or required.
+10. Complete the Definition of Done.
 
 ## Troubleshooting
 
@@ -764,15 +900,7 @@ Use:
 
 to inspect discovered instruction sources.
 
-### Global and repository instructions conflict
-
-Keep global instructions limited to universal working behavior.
-
-Keep repository instructions limited to project-specific facts and rules.
-
-Do not maintain two different repository-level files with overlapping instructions.
-
-### The initializer invents missing information
+### The documentation maintainer invents missing information
 
 Reject unsupported details.
 
@@ -806,12 +934,18 @@ Use links and short summaries rather than copying entire sections.
 
 - [ ] The project directory and repository name are correct.
 - [ ] The project root `README.md` describes the actual project.
-- [ ] Personal Copilot instructions are installed outside the repository.
 - [ ] `.github/copilot-instructions.md` contains project-specific guidance.
 - [ ] `/instructions` shows the expected instruction files.
-- [ ] `/agent` shows all four project agents.
-- [ ] The `demands/`, `plans/`, and `feedback/` directories exist alongside `docs/adr/`.
-- [ ] The documentation initializer has customized the templates.
+- [ ] `/agent` shows the expected project agents.
+- [ ] The `demands/`, `plans/`, and `feedback/` directories exist.
+- [ ] `.github/agent-macros.md` defines the expected macros.
+- [ ] `.github/agentic-workflow-state.md` records the intended tracking mode and verification result.
+- [ ] Clone-local rules are stored under the active Git directory and contain no shared project facts.
+- [ ] `.github/template-help.md` describes the current agents, workflows, setup choices, Git boundaries, reports, and cost controls.
+- [ ] `.github/workflow-profiles.md` defines the expected classification and proportional-document rules.
+- [ ] `reports/execution/`, `reports/stakeholder/`, and `reports/local/` use the intended tracking rules.
+- [ ] The documentation maintainer has bootstrapped or initialized the templates using the appropriate mode.
+- [ ] `feedback/context-revisions.md` exists and has no unreviewed structural or required entries before the first Compact or Extended feature.
 - [ ] Commands and paths were independently reviewed.
 - [ ] Business ownership and stakeholder details were reviewed.
 - [ ] Architecture describes the current implementation.

@@ -2,7 +2,7 @@
 
 Use this module after the source has been captured and repository evidence gathered, to turn raw material into testable requirements.
 
-## Step 4: Clarify only material ambiguity
+## Step 5: Clarify only material ambiguity
 
 Do not block document creation for minor missing details.
 
@@ -14,10 +14,11 @@ Ask a focused question only when the answer would materially change:
 - required behavior
 - constraints
 - acceptance criteria
+- whether an Extended trigger applies
 
 Ask no more than three concise questions in one interaction. When answers are unavailable, create the best draft possible and mark unresolved items explicitly.
 
-## Step 5: Make requirements testable
+## Step 6: Make requirements testable
 
 Write requirements as observable outcomes rather than implementation instructions.
 

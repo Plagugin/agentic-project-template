@@ -20,6 +20,40 @@ Before completion, inspect the aggregate changes and check for:
 
 Remove accidental or unnecessary changes without discarding pre-existing user work.
 
+## Step 11: Assess documentation impact
+
+Perform this assessment after every execution, including small direct tasks.
+
+Add each applicable weight once:
+
+| Change dimension | Weight |
+|---|---:|
+| Architectural boundary, component responsibility, or dependency direction | 3 |
+| Security, privacy, authentication, authorization, or trust boundary | 3 |
+| Public API, schema, event, or persisted-data contract | 3 |
+| Build, setup, CI, deployment, or operational workflow | 2 |
+| Testing strategy, quality gate, or validation command | 2 |
+| Project purpose, ownership, terminology, or user workflow | 2 |
+| Repository layout or source-of-truth responsibility | 2 |
+| Small local implementation detail with no contextual effect | 0 |
+
+Classify the result:
+
+- **0–2 — None or local:** do not create a ledger entry.
+- **3–5 — Material:** append a `Pending` entry to `feedback/context-revisions.md` and recommend running `repository-documentation-maintainer` in `Revise` mode.
+- **6 or more — Structural:** append a `Pending` entry and strongly recommend revision before the next substantial feature.
+- **Security or contract uncertainty:** append a `Pending` entry and classify revision as `Required` regardless of the total.
+
+Before appending:
+
+1. Confirm that directly affected behavioral and operational documentation was updated during implementation.
+2. Check existing pending entries and update a matching entry instead of creating a duplicate.
+3. Use the next available `CTX-YYYY-NNN` identifier.
+4. Record the demand, plan, work item, source branch, base branch, merge status, commit or working-tree reference, affected files, scoring dimensions, candidate documents, and concise reason. Use `Unmerged` for work completed on a feature branch, `Not applicable` for work completed directly on the base branch, and `Not confirmed` when repository evidence is insufficient.
+5. Do not mark the entry resolved. Resolution belongs to `repository-documentation-maintainer` in `Revise` mode.
+
+The numeric score is a consistent trigger, not a claim of mathematical precision. Explain the actual contextual impact.
+
 ## Completion criteria
 
 A selected task is complete only when:
@@ -35,6 +69,13 @@ A selected task is complete only when:
 
 The overall execution is complete only when all selected tasks are complete or explicitly reported as blocked or incomplete.
 
+For local-only artifacts:
+
+- set the selected plan and linked demand lifecycle to `Completed` only when the approved scope and acceptance criteria are complete
+- leave lifecycle `Active` for partial or blocked work
+- use `Abandoned` or `Superseded` only when the user explicitly confirms that outcome
+- change only the lifecycle metadata; do not rewrite the demand or plan's original intent
+
 ## Optional execution report file
 
 Create an execution report file only when:
@@ -47,10 +88,10 @@ Create an execution report file only when:
 Use this precedence for the path:
 
 1. a path explicitly supplied by the user
-2. `reports/<plan-file-stem>-execution-report.md` when a `reports/` directory exists
-3. `execution-report.md` at the repository root
+2. `reports/execution/<plan-file-stem>-execution-report.md`
 
-Do not create a report file for a small task when the final response is sufficient.
+Do not create a report file for Direct work when the final response is sufficient.
+Do not write an execution report to the repository root.
 
 When a report file is created, use this format:
 
@@ -61,6 +102,7 @@ When a report file is created, use this format:
 
 - **Result:** Complete | Complete with limitations | Partially complete | Blocked
 - **Plan source:** `<path>`
+- **Workflow profile:** Direct | Compact | Extended
 - **Selected tasks:** `TASK-001`, `TASK-002`
 - **Working tree baseline:** <clean, dirty with preserved changes, or unavailable>
 
@@ -110,6 +152,16 @@ When a report file is created, use this format:
 ## Follow-up work
 
 - <work outside selected scope or `None`>
+
+## Context revision assessment
+
+- **Impact score:** <number>
+- **Impact level:** None or local | Material | Structural | Required
+- **Dimensions:** <scored dimensions or `None`>
+- **Direct documentation updated:** <paths or `None required`>
+- **Ledger entry:** `feedback/context-revisions.md#<entry>` or `Not created`
+- **Recommendation:** <run `repository-documentation-maintainer` in `Revise` mode, revise before the next substantial feature, required revision, or no revision needed>
+- **Reason:** <concise evidence-based explanation>
 ```
 
 ## Final response format
@@ -121,6 +173,7 @@ At completion, respond using this structure:
 
 **Status:** Complete | Complete with limitations | Partially complete | Blocked  
 **Plan:** `<path or direct instructions>`  
+**Workflow profile:** Direct | Compact | Extended
 **Tasks:** <completed count>/<selected count> completed
 
 ### Implemented
@@ -151,6 +204,7 @@ At completion, respond using this structure:
 
 - Blocker report: `feedback/<slug>-blocker.md` — <one line, or `None created`>
 - Human action request: `feedback/<slug>-human-action.md` — <one line, or `None created`>
+- Context revision: `CTX-YYYY-NNN` — <impact level and recommendation, or `Not needed`>
 - Stakeholder summary: `<path>` — <audience, or `Not created`>
 
 ### Remaining issues
@@ -188,5 +242,7 @@ Before completing, verify all of the following:
 - The final diff was reviewed.
 - No secrets, debugging artifacts, or accidental files remain.
 - Material deviations were stopped and surfaced rather than implemented silently.
+- No unaddressed Extended trigger was implemented through a Direct or Compact workflow.
 - The completion report distinguishes complete, partial, blocked, failed, and unverified work.
 - Any genuine blocker or required human action was recorded under `feedback/` rather than silently dropped, and `feedback/` was checked for an existing open report before creating a new one.
+- The documentation-impact assessment was completed, directly affected documentation was not improperly deferred, and any required context-revision entry was recorded.

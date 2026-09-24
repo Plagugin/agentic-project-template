@@ -18,7 +18,7 @@ Replace every `<...>` placeholder before treating this document as authoritative
   - `docs/PROJECT_CONTEXT.md`
   - `docs/ARCHITECTURE.md`
   - `docs/TESTING.md`
-  - `docs/SECURITY.md`
+  - `docs/SECURE_DEVELOPMENT.md`
   - `CONTRIBUTING.md`
   - `AGENTS.md`
 

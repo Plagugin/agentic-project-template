@@ -17,7 +17,7 @@ Replace every `<...>` placeholder before treating this document as authoritative
   - `docs/PROJECT_CONTEXT.md`
   - `docs/ARCHITECTURE.md`
   - `docs/DEVELOPMENT.md`
-  - `docs/SECURITY.md`
+  - `docs/SECURE_DEVELOPMENT.md`
   - `docs/DEFINITION_OF_DONE.md`
 
 Remove references to files that do not exist.
@@ -416,7 +416,7 @@ Commands:
 
 Security-sensitive test data must remain synthetic.
 
-Record tests requiring specialized review or restricted environments in `docs/SECURITY.md`.
+Record tests requiring specialized review or restricted environments in `docs/SECURE_DEVELOPMENT.md`.
 
 ## Data and migration testing
 

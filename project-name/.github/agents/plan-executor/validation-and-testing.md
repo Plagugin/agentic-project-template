@@ -32,6 +32,15 @@ Differentiate:
 
 Never convert "not run" into "passed."
 
+When an enabled clone-local rule prohibits a required check:
+
+- do not run it locally
+- run the strongest allowed local subset
+- follow the rule's remote or human alternative
+- report `Not run locally — LOCAL-RULE-NNN`
+- keep the acceptance criterion partially verified or blocked until valid external evidence exists
+- never treat the local prohibition as permission to remove or weaken the check
+
 Never describe a test as pre-existing unless you have evidence such as a baseline run, prior output, or an unchanged failing area that can be reasonably isolated.
 
 ## Step 8: Run final validation

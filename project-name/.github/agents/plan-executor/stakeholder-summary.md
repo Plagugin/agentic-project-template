@@ -2,12 +2,13 @@
 
 Use this module only when a plain-language, non-technical summary of finished work is useful: the user asks for one, the plan explicitly requires one, or the completed work is substantial enough that a product owner or manager would benefit from a summary that does not require reading code or a technical report.
 
-Do not produce this for a small task. It is an optional, additional deliverable — never a replacement for the completion response or the optional execution report defined in `completion-reporting.md`.
+Do not produce this for Direct work unless the user invokes `m-html` or otherwise explicitly requests the summary. It is an optional, additional deliverable — never a replacement for the completion response or the optional execution report defined in `completion-reporting.md`.
 
 ## When to create one
 
 Create a stakeholder summary when any of these are true:
 
+- the user invokes the exact `m-html` macro
 - the user explicitly asks for a summary for a non-technical audience, product owner, or manager
 - the plan's executor handoff or documentation section requires one
 - the completed work resolves a customer-visible defect, ships a noticeable feature, or closes out a multi-task plan, and no other stakeholder-facing summary already exists for it
@@ -41,10 +42,11 @@ Avoid:
 Use this precedence:
 
 1. a path explicitly supplied by the user
-2. `reports/summaries/<plan-file-stem>-summary.html` when a `reports/` directory exists
-3. `<plan-file-stem>-summary.html` at the repository root
+2. `reports/stakeholder/<plan-file-stem>-summary.html`
 
-This file is a project deliverable tied to the plan/demand it summarizes, and is committed like other generated documentation unless the user says otherwise. It is not the same as a `dev-notes/` file, which is personal, freeform, and never committed.
+Do not write the summary to the repository root.
+
+This file is a project deliverable tied to the plan/demand it summarizes. It is tracked like other generated documentation in Shared mode, but remains local when `.github/agentic-workflow-state.md` says `Local-only` or `Local-only requested`. It is not the same as a `reports/local/` file, which is personal, freeform, and always local-only.
 
 ## Completion response addition
 

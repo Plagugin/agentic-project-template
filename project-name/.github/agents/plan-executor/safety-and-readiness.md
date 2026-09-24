@@ -2,6 +2,8 @@
 
 Use this module first, before any file is edited: preserving the working tree, protecting data and environments, locating the plan, and assessing execution readiness.
 
+Read `.github/workflow-profiles.md` when the execution source is Direct or Compact.
+
 ## Core execution principle: Treat the plan as a guide grounded by repository truth
 
 Follow the plan's intended behavior, decisions, scope, task order, constraints, and validation requirements.
@@ -104,7 +106,17 @@ Do not add a dependency merely because it makes implementation easier. First pre
 
 ## Step 1: Locate the execution source
 
-Use this precedence:
+Read `.github/agentic-workflow-state.md` when it exists. When it says `Local-only` or `Local-only requested`, identify the current branch and apply this plan-selection precedence:
+
+1. the plan path explicitly supplied by the user
+2. the plan explicitly referenced in the prompt
+3. an `Active` plan matching both current work item and source branch
+4. an `Active` plan matching the current work item
+5. explicit task instructions from the user
+
+Never automatically select a plan whose lifecycle is `Completed`, `Abandoned`, or `Superseded`. Ask the user when several active plans match.
+
+Otherwise, use this precedence:
 
 1. the plan path explicitly supplied by the user
 2. the plan explicitly referenced in the prompt
@@ -116,16 +128,20 @@ When multiple plausible plans exist, use the one most clearly connected to the c
 
 Also locate the associated demand, normally under `demands/`, when the plan references one.
 
+For a local-only plan, compare its work item and source branch with the current branch. A mismatch makes the plan historical evidence, not an automatically executable instruction. Revalidate repository assumptions and obtain explicit user confirmation before executing it. Stop when the mismatch may indicate the wrong ticket, incompatible repository basis, or unmerged work.
+
 Record:
 
 - plan source
 - plan status
+- workflow profile and whether it was user-selected or agent-confirmed
 - selected tasks
 - linked demand
 - plan assumptions
 - blockers and stop conditions
 - required validation
 - rollout or migration requirements
+- work item, source branch, base branch, artifact scope, and lifecycle when local-only mode applies
 
 ## Step 2: Inspect repository instructions
 
@@ -156,6 +172,8 @@ Inspect:
 - test configuration
 - relevant source and test files
 - plan-referenced paths and symbols
+
+Resolve `agentic-workflow/local-rules.md` through the active Git directory. Record enabled rules relevant to commands, files, validation, environments, and remote actions. Stop before performing an action prohibited by a rule; obtain confirmation where required.
 
 When practical and proportionate, run a targeted baseline check before editing. A baseline is especially useful when:
 
@@ -189,5 +207,42 @@ Stop before editing when:
 - the implementation would risk data loss
 - a security or compliance decision is missing
 - scope cannot be determined reliably
+- a Direct request fails any Direct condition
+- a Direct or Compact execution reveals an Extended trigger not addressed by an approved Extended plan
+- a local-only plan does not match the current work item or branch and cross-branch execution has not been explicitly confirmed
+
+### Protect clone-local paths during commits
+
+When the user explicitly requests a commit:
+
+1. resolve the Git directory and read `agentic-workflow/commit-policy.md` when present
+2. stage intended shared files explicitly; do not use broad staging commands while protected paths exist
+3. inspect `git diff --cached --name-only`
+4. compare staged files with every entry in `agentic-workflow/protected-paths.txt`
+5. stop if a protected file or a file beneath a protected directory is staged
+6. never use force-add or `--no-verify` to bypass the policy
+
+Do not unstage, untrack, or remove files unless the user explicitly authorizes the exact state-changing Git operation.
+
+### Protect local overrides during remote updates
+
+When the user explicitly requests `git pull` or equivalent integration and a protected-path list exists:
+
+1. do not run direct `git pull`
+2. fetch the configured upstream
+3. compare `HEAD..@{upstream}` for every protected path
+4. stop before merge, rebase, checkout, or reset if the upstream changed, added, renamed, or deleted any protected path
+5. report the affected paths and leave the working tree unchanged
+6. integrate only when no protected path changed, using the repository-defined strategy or fast-forward-only integration when none is defined
+
+Do not selectively accept the rest of a remote update automatically when a protected path changed. That requires explicit reconciliation because the remote commit may depend on the protected change.
+
+When a profile mismatch is found:
+
+- do not silently continue with broader work
+- record the evidence and affected scope
+- recommend demand intake or technical planning at the required profile
+- create or update a blocker report when an approved demand or plan can no longer be executed as written
+- continue only independent work that remains valid within the approved profile
 
 When a task is genuinely blocked or partially blocked, create a blocker report under `feedback/` (see `feedback/README.md` and `feedback/blocker-template.md`) describing what was attempted, why it cannot proceed, the evidence, and what would unblock it. When work is unblocked but depends on a person completing an action you cannot perform, create a human action request instead (`feedback/human-action-template.md`) and continue with independent, unblocked tasks. Check `feedback/` first for an existing open report on the same plan or demand before creating a new one.
